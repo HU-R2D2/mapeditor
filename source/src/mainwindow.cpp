@@ -142,7 +142,8 @@ void MainWindow::on_Set_clicked()
 {
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
-    ui->graphicsView->displayEdit();
+
+    // optional if tile selection is used
     ui->graphicsView->deselectTiles();
 }
 

@@ -127,7 +127,7 @@ public:
     //!         and updates the transform
     //!
     //! \param  integer value of inc to be used to increase the rotation value
-    void increaseRotation(int inc = 90);
+    void increaseRotation(int inc = 10);
 
     //! \fn     void mapEditor::decreaseRotation()
     //!
@@ -136,7 +136,7 @@ public:
     //!         and updates the transform
     //!
     //! \param  integer value of dec to be used to decrease the rotation value
-    void decreaseRotation(int dec = 90);
+    void decreaseRotation(int dec = 10);
 
     //! \fn     mapEditor::resetRotation()
     //!

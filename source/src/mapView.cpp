@@ -141,26 +141,16 @@ void mapView::setZoomSpeed(qreal speed){
     zoomSpeed = speed;
 }
 
-void mapView::deselectTiles(){
-    for(QGraphicsItem * tile : scene->selectedItems()){
-        tile->setSelected(false);
-    }
-}
-
 void mapView::updateSelection(){
 
-    //QGraphicsItemGroup selection; //= scene->createItemGroup( scene->selectedItems());
 
     if(scene->selectedItems().size() > 0){
         std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
         QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
         QPointF tr = scene->selectionArea().boundingRect().topRight();
 
-        //new method stores complete box
-        QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
-        QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y()), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x(), t.y()), 1);
+        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(bl, 0);
+        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(tr, 1);
         r2d2::Box box(leftBottom, rightTop);
 
         selectedBox = box;

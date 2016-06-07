@@ -75,13 +75,6 @@ public:
     //! \param  type is the Qstring name of the boxinfo type
     void editTile(QString type);
 
-    //! \fn     void mapEditor::displayEdit()
-    //!
-    //! \brief  deletes old boxes from the view and replaces them with the new box info
-    //!
-    //! \param  type is the Qstring name of the boxinfo type
-    void displayEdit();
-
 signals:
 
 public slots:
