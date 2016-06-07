@@ -4,6 +4,7 @@
 mapEditor::mapEditor(QWidget *parent) :
     mapView(parent)
     {
+        edited = false;
     }
 
 void mapEditor::removeTile(){
@@ -25,24 +26,28 @@ void mapEditor::editTile(QString type){
     }
 
     //store
+    if(true){
+        std::cout << "i worked my way up here" << std::endl;
+        fflush(stdout);
+        editBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(selectedBox, info));
+        map->set_box_info(selectedBox, info);
+        //edited = false;
+        std:: cout << "write: " << editBuffer.size() << std::endl;
 
-    for(r2d2::Box tile: selectedBoxes){
-        saveBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(tile, info));
-        map->set_box_info(tile, info);
-        std:: cout << "write: " << saveBuffer.size() << std::endl;
+        scene->deleteSelectedItems();
+        deselectTiles();
+        std::cout << "Saved Tiles: " << editBuffer.size() << std::endl;
     }
-    scene->deleteSelectedItems();
-    deselectTiles();
-    std::cout << "Saved Tiles: " << saveBuffer.size() << std::endl;
+
 }
 
 void mapEditor::displayEdit(){
     int tileSize=10;
     scene->clearSelection();
 
-    while(!saveBuffer.empty()){
-        std::pair<r2d2::Box, r2d2::BoxInfo> box = saveBuffer.back();
-        saveBuffer.pop_back();
+    while(!editBuffer.empty()){
+        std::pair<r2d2::Box, r2d2::BoxInfo> box = editBuffer.back();
+        editBuffer.pop_back();
         drawBox(box.first, tileSize, false);
     }
     this->setSelectable(true);

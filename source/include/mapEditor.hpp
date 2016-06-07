@@ -88,8 +88,9 @@ signals:
 public slots:
 
 private:
+    bool edited;
     //! Temporary storage for boxes
-    std::vector<std::pair<r2d2::Box, r2d2::BoxInfo> > saveBuffer;
+    std::vector<std::pair<r2d2::Box, r2d2::BoxInfo> > editBuffer;
     };
 
 #endif // MAPEDITOR_HPP

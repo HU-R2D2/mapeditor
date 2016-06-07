@@ -130,8 +130,23 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="backgroundBrush">
+     <brush brushstyle="Dense1Pattern">
+      <color alpha="255">
+       <red>230</red>
+       <green>230</green>
+       <blue>230</blue>
+      </color>
+     </brush>
+    </property>
     <property name="dragMode">
      <enum>QGraphicsView::NoDrag</enum>
+    </property>
+    <property name="cacheMode">
+     <set>QGraphicsView::CacheBackground</set>
+    </property>
+    <property name="rubberBandSelectionMode">
+     <enum>Qt::IntersectsItemBoundingRect</enum>
     </property>
    </widget>
    <widget class="QLineEdit" name="inputX">
