@@ -27,7 +27,12 @@ mapView::mapView(QWidget *parent):
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     scene = new viewScene;
+    QPalette p = scene->palette();
 
+    p.setColor(QPalette::Highlight, Qt::red);
+
+
+    scene->setPalette(p);
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
@@ -143,31 +148,22 @@ void mapView::deselectTiles(){
 }
 
 void mapView::updateSelection(){
-    std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
-    QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
-    QPointF tr = scene->selectionArea().boundingRect().topRight();
-    if(scene->selectedItems().size() > 0){
-        selectedBoxes.clear();
-        /* old method item for item, keep in dev for legacy reasons and speed testing
-        QRectF rect = scene->selectedItems()[0]->boundingRect();
-        for(QGraphicsItem * item : scene->selectedItems()){
-            QPointF pos = item->pos();
-            QRectF rect = item->boundingRect();
-            int width = rect.width();
-            int height = rect.height();
 
-            r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 0);
-            r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y()+ height), 1);
-            r2d2::Box box(leftBottom, rightTop);
-            selectedBoxes.append(box);
-        }*/
+    //QGraphicsItemGroup selection; //= scene->createItemGroup( scene->selectedItems());
+
+    if(scene->selectedItems().size() > 0){
+        std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
+        QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
+        QPointF tr = scene->selectionArea().boundingRect().topRight();
+
         //new method stores complete box
-        QPointF b = scene->itemAt(bl, transform())->pos();
-        QPointF t = scene->itemAt(tr, transform())->pos();
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y() + 10.0f), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x() + 10.0f, t.y() - 10.0f), 1);
+        QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
+        QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
+        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y()), 0);
+        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x(), t.y()), 1);
         r2d2::Box box(leftBottom, rightTop);
-        selectedBoxes.append(box);
+
+        selectedBox = box;
      }
 }
 
@@ -243,7 +239,7 @@ void mapView::loadMapFile(string file)
     }
 
 void mapView::saveMapFile(std::string file){
-    map = new r2d2::BoxMap;
+    //map = new r2d2::BoxMap;
     map->save(file);
 
 }

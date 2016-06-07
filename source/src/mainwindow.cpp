@@ -98,8 +98,9 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
                 ui->actionPan->setChecked(false);
                 ui->graphicsView->setSelectable(true);
                 ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-                ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
-            }
+                //ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
+                ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
+        }
         else{
                 ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
                 ui->graphicsView->setSelectable(false);
@@ -142,6 +143,7 @@ void MainWindow::on_Set_clicked()
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
     ui->graphicsView->displayEdit();
+    ui->graphicsView->deselectTiles();
 }
 
 void MainWindow::on_placeTagButton_clicked()

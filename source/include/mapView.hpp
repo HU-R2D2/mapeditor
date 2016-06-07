@@ -292,7 +292,7 @@ protected:
     int z_top = 1;
 
     //! list of selected boxes
-    QList<r2d2::Box> selectedBoxes;
+    r2d2::Box selectedBox;
     };
 
 #endif // MAPVIEW_HPP
