@@ -156,8 +156,6 @@ void mapView::updateSelection(){
         QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
         QPointF tr = scene->selectionArea().boundingRect().topRight();
 
-        selectedBoxes.clear();
-
         //new method stores complete box
         QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
         QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
