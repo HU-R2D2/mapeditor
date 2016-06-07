@@ -46,7 +46,7 @@ void mapEditor::displayEdit(){
     while(!editBuffer.empty()){
         std::pair<r2d2::Box, r2d2::BoxInfo> box = editBuffer.back();
         editBuffer.pop_back();
-        drawBox(box.first, tileSize, false);
+        //drawBox(box.first, tileSize, false);
     }
     this->setSelectable(true);
 }

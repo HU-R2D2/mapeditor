@@ -251,7 +251,7 @@ private:
 
 protected:
     //! loaded map
-    r2d2::SaveLoadMap * map;
+    r2d2::BoxMap * map;
 
     //! \fn     bool mapEditor::event()
     //!

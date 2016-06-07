@@ -1,4 +1,5 @@
 #include "../include/mapView.hpp"
+#include "../../map/source/include/ArrayBoxMap.hpp"
 #include <iostream>
 #include <QMouseEvent>
 #include <QScrollBar>
@@ -233,7 +234,7 @@ void mapView::checkSceneBorder(){
 
 void mapView::loadMapFile(string file)
     {
-        map = new r2d2::BoxMap;
+        map = new r2d2::ArrayBoxMap;
         map->load(file);
         drawMap();
     }
@@ -304,42 +305,6 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
     else{return MapTypes::TileType::MIXED;}
 }
 
-void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
-        int xAxisMin = round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
-        int yAxisMin = round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
-        int xAxisMax = round(box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
-        int yAxisMax = round(box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
-        r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
-                                              r2d2::Length::CENTIMETER * tileSize,
-                                              r2d2::Length::CENTIMETER * z_top);
-        /* var for calculating loading progress, keep in dev for posible new feature, debugging and speed testing
-        int dis = abs(xAxisMin-xAxisMax);
-        */
-        for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
-            for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
-                    r2d2::Coordinate bottemLeft{r2d2::Length::CENTIMETER * x,
-                                    r2d2::Length::CENTIMETER * y,
-                                    r2d2::Length::CENTIMETER * z_bottom};
-                    r2d2::Box tileBox(bottemLeft,tileSizeTranslation);
-                    r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
-                    scene->drawTile(tileBox,tileColors[getTileType(tileInfo)]);
-                }
-            /* calculating loading progress, keep in dev for posible new feature, debugging and speed testing
-            int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
-            std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
-            */
-            }
-        if(centeron){
-            centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                        0*r2d2::Length::CENTIMETER,
-                                                        0*r2d2::Length::CENTIMETER,
-                                                        0*r2d2::Length::CENTIMETER)));
-        }
-        scene->drawAxes();
-    }
-
-
-
 void mapView::drawMap(){
         scene->clear();
         resetScale();
@@ -349,30 +314,28 @@ void mapView::drawMap(){
                                                     0*r2d2::Length::CENTIMETER,
                                                     0*r2d2::Length::CENTIMETER)));
 
-        //this is not almost working code...
-//        QPointF startPoint = mapToScene(QPoint(0,0));
-//        QPointF endPoint = mapToScene(QPoint(width(),height()));
-//        const r2d2::Coordinate bottemLeft1{
-//                        r2d2::Length::CENTIMETER * ceil(((scene->getOriginOffset().x() - startPoint.x()+10)*-1)/10)*10,
-//                        r2d2::Length::CENTIMETER * ceil((scene->getOriginOffset().y() - endPoint.y()-10)/10)*10,
-//                        r2d2::Length::CENTIMETER * z_bottom};
-//        const r2d2::Translation boxSize{
-//                        r2d2::Length::CENTIMETER * (width()/2),
-//                        r2d2::Length::CENTIMETER * (height()/2),
-//                        r2d2::Length::CENTIMETER * z_top};
-
-        const r2d2::Coordinate bottemLeft1{
-                        r2d2::Length::CENTIMETER * -400,
-                        r2d2::Length::CENTIMETER * -400,
-                        r2d2::Length::CENTIMETER * z_bottom};
-        const r2d2::Translation boxSize{
-                        r2d2::Length::CENTIMETER * 800,
-                        r2d2::Length::CENTIMETER * 800,
-                        r2d2::Length::CENTIMETER * z_top};
+    //TODO: Fix this so it returns the view rect in scene coords
+    //    std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
+    //USE THIS METHOD        qrect_2_box_coordinate());
 
 
 
-        drawBox(r2d2::Box(bottemLeft1,boxSize));;
+
+        for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
+            const r2d2::Coordinate bottemLeft{
+                                   pair.first.get_bottom_left().get_x() / 10.0,
+                                   pair.first.get_bottom_left().get_y()  / 10.0,
+                                   r2d2::Length::CENTIMETER * z_bottom};
+            const r2d2::Coordinate topRight{
+                                   pair.first.get_top_right().get_x() / 10.0,
+                                   pair.first.get_top_right().get_y() / 10.0,
+                                   r2d2::Length::CENTIMETER * z_top};
+
+            r2d2::Box tempbox(bottemLeft,topRight);
+            scene->drawTile(tempbox, tileColors[getTileType(pair.second)]);
+        }
+        scene->drawAxes();
+
     }
 
 
