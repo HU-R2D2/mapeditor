@@ -11,7 +11,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
-#include "..\include\mapEditor.hpp"
+#include "../include/mapEditor.hpp"
 #include "../../../map/source/include/BoxMap.hpp"
 
 
@@ -25,9 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //hijacking scrolbar events
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
-
-    //install event filter for graphicsView
-    //ui->graphicsView->installEventFilter(this);
 
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
@@ -49,14 +46,7 @@ void MainWindow::on_actionSave_as_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
     fileName_std = fileName.toUtf8().constData();
-    std::cout << fileName_std;
-
-
-
     ui->graphicsView->saveMapFile(fileName_std);
-
-
-
 }
 
 void MainWindow::on_actionLoad_triggered()
@@ -67,7 +57,7 @@ void MainWindow::on_actionLoad_triggered()
     if (dialog.exec()){
         fileNames = dialog.selectedFiles();
         fileName_std = fileNames.first().toUtf8().constData();
-        ui->graphicsView->loadMapFile(fileNames.first().toUtf8().constData());
+        ui->graphicsView->loadMapFile(fileName_std);
     }
 }
 
@@ -104,7 +94,6 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 {
-
         if(activateSelect){
                 ui->actionPan->setChecked(false);
                 ui->graphicsView->setSelectable(true);
@@ -127,7 +116,6 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
                 ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
                 ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
-                //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
             }
@@ -138,11 +126,12 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 break;
             }
         default:
-            //std::cout << "mapview event filter event type " << event->type() << std::endl;
+            /* keep in code for debug purposes
+            std::cout << "mapview event filter event type " << event->type() << std::endl;
+            fflush(stdout);
+            */
             break;
         }
-    fflush(stdout);
-    //TODO: i have no clue what this return method does(for all event related methods), should be figured out....
     return false;
 }
 
@@ -161,9 +150,9 @@ void MainWindow::on_placeTagButton_clicked()
 {
     int x = ui->xposTag->value();
     int y = ui->yposTag->value();
-
+    r2d2::Coordinate pos(x*r2d2::Length::CENTIMETER,y*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER);
     QString tag(ui->tagName->text());
-    //ui->graphicsView->scene->setTag(x, y, tag);
+    ui->graphicsView->scene->setTag(pos, tag);
 }
 
 void MainWindow::on_clearButton_clicked()
@@ -173,17 +162,11 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_actionSave_triggered()
 {
-
     if(fileName_std == ""){
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
-        fileName_std = fileName.toUtf8().constData();
-        std::cout << fileName_std;
-    }
-
-     ui->graphicsView->saveMapFile(fileName_std);
-
-
-
+        on_actionSave_as_triggered();
+    }else {
+        ui->graphicsView->saveMapFile(fileName_std);
+        }
 }
 
 void MainWindow::on_rotateLeftButton_clicked()
@@ -209,10 +192,13 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
     ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
 }
 
-
 void MainWindow::on_goNavigate_clicked()
 {
-    ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
+    r2d2::Coordinate pos(
+                ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
+                ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
+                0*r2d2::Length::CENTIMETER);
+    ui->graphicsView->centerOn(ui->graphicsView->scene->box_coordinate_2_qpoint(pos));
     ui->graphicsView->set_z_top(ui->input_z_bot->text().toFloat());
     ui->graphicsView->set_z_bottom(ui->input_z_top->text().toFloat());
 
@@ -223,7 +209,6 @@ void MainWindow::on_actionDebug_triggered()
    int test = ui->graphicsView->scene->items().length();
    std::cout << "items in scene items list: " << test << std::endl;
 
-
    QRectF testrect(10,10,10,10);
 
    std::cout<< "testrect: " <<
@@ -231,7 +216,6 @@ void MainWindow::on_actionDebug_triggered()
    testrect.right() << " " <<
    testrect.bottom() << " " <<
    testrect.top() << std::endl;
-
 
    r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
 
@@ -258,7 +242,6 @@ void MainWindow::on_actionDebug_triggered()
       testbox.get_top_right().get_y() << std::endl;
 
 }
-
 
 void MainWindow::on_Delete_pressed()
 {

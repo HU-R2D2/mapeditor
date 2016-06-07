@@ -50,7 +50,6 @@
 #define MAPEDITOR_HPP
 
 #include "mapView.hpp"
-#include "stubs.hpp"
 #include "../../../map/source/include/MapInterface.hpp"
 
 //! @brief      The mapEditor class is used to write to maps

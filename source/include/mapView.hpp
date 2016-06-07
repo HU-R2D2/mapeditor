@@ -52,10 +52,10 @@
 #define MAPVIEW_HPP
 #include "../../../map/source/include/MapInterface.hpp"
 #include "../../../map/source/include/BoxMap.hpp"
-#include "../../../adt/source/include/Box.hpp"
-#include "../../../adt/source/include/Coordinate.hpp"
-#include "../../../adt/source/include/Translation.hpp"
-#include "../../../adt/source/include/Length.hpp"
+#include "Box.hpp"
+#include "Coordinate.hpp"
+#include "Translation.hpp"
+#include "Length.hpp"
 #include <QGraphicsWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>

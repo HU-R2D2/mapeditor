@@ -28,11 +28,6 @@ void viewScene::drawAxes()
         yAxis = addLine(originOffset.x(),0,originOffset.x(),height(),pen);
     }
 
-QPoint viewScene::getOriginOffset()
-    {
-        return originOffset;
-    }
-
 void viewScene::addOriginOffset(unsigned int x, unsigned int y)
     {
         setNewOriginOffset(originOffset.x()+x,originOffset.y()+y);
@@ -53,8 +48,8 @@ QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
 
 r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point, double z){
         return r2d2::Coordinate(
-                    (point.x() - getOriginOffset().x())*r2d2::Length::CENTIMETER,
-                    ((point.y() - getOriginOffset().y()))*-1*r2d2::Length::CENTIMETER,
+                    (point.x() - originOffset.x())*r2d2::Length::CENTIMETER,
+                    ((point.y() - originOffset.y()))*-1*r2d2::Length::CENTIMETER,
                     z*r2d2::Length::CENTIMETER
                     );
     }
@@ -96,4 +91,9 @@ void viewScene::deleteSelectedItems(){
     foreach( QGraphicsItem * item, list ){
         removeItem(item);
     }
+}
+
+void viewScene::setTag(r2d2::Coordinate pos, QString value){
+    QGraphicsTextItem *item = addText(value);
+    item->setPos(box_coordinate_2_qpoint(pos));
 }

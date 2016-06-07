@@ -48,7 +48,10 @@ mapView::mapView(QWidget *parent):
 
     scene->clear();
     scene->addOriginOffset(250,250);
-    centerOn(QPointF(0,0)+scene->getOriginOffset());
+    centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                0*r2d2::Length::CENTIMETER,
+                                                0*r2d2::Length::CENTIMETER,
+                                                0*r2d2::Length::CENTIMETER)));
 }
 
 mapView::~mapView(){
@@ -152,29 +155,9 @@ void mapView::updateSelection(){
         std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
         QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
         QPointF tr = scene->selectionArea().boundingRect().topRight();
-        //QRectF rect = scene->selectedItems()[0]->boundingRect();
-        //float width = rect.width();
-        //float height = rect.height();
-        /* old method item for item, keep in dev for legacy reasons and speed testing
-        for(QGraphicsItem * item : scene->selectedItems()){
-            QPointF pos = item->pos();
-            QRectF rect = item->boundingRect();
-            int width = rect.width();
-            int height = rect.height();
 
-            r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 0);
-            r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y()+ height), 1);
-            r2d2::Box box(leftBottom, rightTop);
-            selectedBoxes.append(box);
-        }*/
+        selectedBoxes.clear();
 
-        /*for(QGraphicsItem * item : scene->selectedItems()){
-            selection->addToGroup(item);
-        }
-        QPointF bl = selection->boundingRect().bottomLeft();
-        QPointF tr = selection->boundingRect().topRight();
-        std::cout << bl.x() << " x " << bl.y()  <<std::endl;
-        */
         //new method stores complete box
         QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
         QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
@@ -331,7 +314,9 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * z_top);
+        /* var for calculating loading progress, keep in dev for posible new feature, debugging and speed testing
         int dis = abs(xAxisMin-xAxisMax);
+        */
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
                     r2d2::Coordinate bottemLeft{r2d2::Length::CENTIMETER * x,
@@ -341,11 +326,16 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
                     r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
                     scene->drawTile(tileBox,tileColors[getTileType(tileInfo)]);
                 }
+            /* calculating loading progress, keep in dev for posible new feature, debugging and speed testing
             int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
-            //std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
+            std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
+            */
             }
         if(centeron){
-            centerOn(scene->getOriginOffset());
+            centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                        0*r2d2::Length::CENTIMETER,
+                                                        0*r2d2::Length::CENTIMETER,
+                                                        0*r2d2::Length::CENTIMETER)));
         }
         scene->drawAxes();
     }
@@ -356,7 +346,10 @@ void mapView::drawMap(){
         scene->clear();
         resetScale();
         scene->addOriginOffset(250,250);
-        centerOn(QPointF(0,0)+scene->getOriginOffset());
+        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER)));
 
         //this is not almost working code...
 //        QPointF startPoint = mapToScene(QPoint(0,0));
