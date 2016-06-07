@@ -26,7 +26,6 @@ void mapEditor::editTile(QString type){
     }
 
     //store
-    if(true){
         std::cout << "i worked my way up here" << std::endl;
         fflush(stdout);
         editBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(selectedBox, info));
@@ -37,7 +36,6 @@ void mapEditor::editTile(QString type){
         scene->deleteSelectedItems();
         deselectTiles();
         std::cout << "Saved Tiles: " << editBuffer.size() << std::endl;
-    }
 
 }
 
