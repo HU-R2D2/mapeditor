@@ -19,10 +19,8 @@ TEMPLATE = app
 
 SOURCES += source/src/main.cpp \
     source/src/mainwindow.cpp \
-    source/src/map_utils.cpp \
     source/src/mapEditor.cpp \
     source/src/mapView.cpp \
-    source/src/RectInfo.cpp \
     source/src/viewScene.cpp \
     ../adt/source/src/Length.cpp \
     ../adt/source/src/Translation.cpp \
@@ -33,11 +31,8 @@ SOURCES += source/src/main.cpp \
 
 
 HEADERS  += source/include/mainwindow.hpp \
-    source/include/map_utils.hpp \
     source/include/mapEditor.hpp \
     source/include/mapView.hpp \
-    source/include/RectInfo.hpp \
-    source/include/stubs.hpp \
     source/include/viewScene.hpp \
     ../adt/source/include/Length.hpp \
     ../adt/source/include/Translation.hpp \
@@ -47,5 +42,6 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/BoxMap.hpp
 
 INCLUDEPATH += ../adt/source/include/
+INCLUDEPATH += source/include/
 
 FORMS    += source/mainwindow.ui
