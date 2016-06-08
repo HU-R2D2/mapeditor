@@ -17,7 +17,7 @@
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
 #include "../../../map/source/include/MapInterface.hpp"
-#include "../../../map/source/include/BoxMap.hpp"
+#include "../../../map/source/include/ArrayBoxMap.hpp"
 #include "../../../adt/source/include/Box.hpp"
 #include "../../../adt/source/include/Coordinate.hpp"
 #include "../../../adt/source/include/Translation.hpp"
