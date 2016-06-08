@@ -315,20 +315,20 @@ void mapView::drawMap(){
                                                     0*r2d2::Length::CENTIMETER)));
 
     //TODO: Fix this so it returns the view rect in scene coords
-    //    std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
-    //USE THIS METHOD        qrect_2_box_coordinate());
+       std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
+       scene->qrect_2_box_coordinate(sceneRect()));
 
 
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
             const r2d2::Coordinate bottemLeft{
-                                   pair.first.get_bottom_left().get_x() / 10.0,
-                                   pair.first.get_bottom_left().get_y()  / 10.0,
+                                   pair.first.get_bottom_left().get_x()/ 100.0,
+                                   pair.first.get_bottom_left().get_y()/ 100.0,
                                    r2d2::Length::CENTIMETER * z_bottom};
             const r2d2::Coordinate topRight{
-                                   pair.first.get_top_right().get_x() / 10.0,
-                                   pair.first.get_top_right().get_y() / 10.0,
+                                   pair.first.get_top_right().get_x()/ 100.0,
+                                   pair.first.get_top_right().get_y()/ 100.0,
                                    r2d2::Length::CENTIMETER * z_top};
 
             r2d2::Box tempbox(bottemLeft,topRight);
