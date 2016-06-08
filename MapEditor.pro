@@ -27,7 +27,7 @@ SOURCES += source/src/main.cpp \
     ../adt/source/src/Box.cpp \
     ../adt/source/src/Coordinate.cpp \
     ../map/source/src/MapInterface.cpp \
-    ../map/source/src/BoxMap.cpp
+    ../map/source/src/ArrayBoxMap.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \
@@ -39,9 +39,14 @@ HEADERS  += source/include/mainwindow.hpp \
     ../adt/source/include/Box.hpp \
     ../adt/source/include/Coordinate.hpp \
     ../map/source/include/MapInterface.hpp \
-    ../map/source/include/BoxMap.hpp
+    ../map/source/include/BoxMap.hpp \
+    ../map/source/include/ArrayBoxMap.hpp
 
 INCLUDEPATH += ../adt/source/include/
+INCLUDEPATH += ../map/source/include/
 INCLUDEPATH += source/include/
 
 FORMS    += source/mainwindow.ui
+
+DISTFILES += \
+    ../map/save_and_load_test.json
