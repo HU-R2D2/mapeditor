@@ -291,9 +291,9 @@ protected:
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
-    qreal zoomSpeed = 0.05f;
-    qreal maxScale  = 20.0f;
-    qreal minScale  = 0.001f;
+    qreal zoomSpeed = 0.1f;
+    qreal maxScale  = 5.0f;
+    qreal minScale  = 0.06f;
 
     //! Scalesize default is half of the scale range
     qreal scaleSize = (maxScale / 2) - minScale;
