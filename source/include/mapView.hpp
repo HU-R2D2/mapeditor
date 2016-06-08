@@ -52,6 +52,7 @@
 #define MAPVIEW_HPP
 #include "../../../map/source/include/MapInterface.hpp"
 #include "../../../map/source/include/BoxMap.hpp"
+#include "../../map/source/include/ArrayBoxMap.hpp"
 #include "Box.hpp"
 #include "Coordinate.hpp"
 #include "Translation.hpp"
@@ -210,8 +211,18 @@ public:
 
     //! \fn      mapView::drawMap()
     //!
-    //! \brief   focus viewport on the origin and (re)draw the map
+    //! \brief   (re)draw all the objects the map
     void drawMap();
+
+    //! \fn      mapView::emptyMap()
+    //!
+    //! \brief   replace the current map with a new empty one
+    void emptyMap();
+
+    //! \fn      mapView::recenterMap()
+    //!
+    //! \brief   recenter the map and reset the scale
+    void recenterMap();
 
     //! \fn     TileType mapEditor::getTileType()
     //!
@@ -251,7 +262,7 @@ private:
 
 protected:
     //! loaded map
-    r2d2::BoxMap * map;
+    r2d2::BoxMap * map = new r2d2::ArrayBoxMap;
 
     //! \fn     bool mapEditor::event()
     //!

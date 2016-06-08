@@ -140,10 +140,11 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 void MainWindow::on_Set_clicked()
 {
+
+
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
-    ui->graphicsView->displayEdit();
-    ui->graphicsView->deselectTiles();
+    ui->graphicsView->drawMap();
 }
 
 void MainWindow::on_placeTagButton_clicked()
@@ -158,6 +159,8 @@ void MainWindow::on_placeTagButton_clicked()
 void MainWindow::on_clearButton_clicked()
 {
     ui->graphicsView->scene->clear();
+    //Enable code below to transform the clear button to a delete map button.
+    ui->graphicsView->emptyMap();
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -247,5 +250,5 @@ void MainWindow::on_Delete_pressed()
 {
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
-    ui->graphicsView->displayEdit();
+    ui->graphicsView->drawMap();
 }

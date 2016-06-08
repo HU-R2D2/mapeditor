@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <QtGui>
 #include <QMutex>
+#include <Qrect>
 
 QMutex EventRecursion;
 
@@ -37,7 +38,6 @@ mapView::mapView(QWidget *parent):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
-    //editor = new mapEditor(this);
     show();
 
     //set default scale
@@ -47,12 +47,7 @@ mapView::mapView(QWidget *parent):
     horizontalScrollBar()->installEventFilter(this);
     setMouseTracking(true);
 
-    scene->clear();
-    scene->addOriginOffset(250,250);
-    centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                0*r2d2::Length::CENTIMETER,
-                                                0*r2d2::Length::CENTIMETER,
-                                                0*r2d2::Length::CENTIMETER)));
+    recenterMap();
 }
 
 mapView::~mapView(){
@@ -126,6 +121,7 @@ void mapView::updateTransform(){
     resetTransform();
     rotate(rotation);
     scale(scaleSize, scaleSize);
+    drawMap();
 }
 
 void mapView::set_z_bottom(float value)
@@ -149,24 +145,14 @@ void mapView::deselectTiles(){
 }
 
 void mapView::updateSelection(){
+    QRectF newBoxArea = scene->selectionArea().boundingRect();
+    r2d2::Box box(scene->qpoint_2_box_coordinate(newBoxArea.bottomLeft()), scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
+    selectedBox = box;
+    drawMap();
 
-    //QGraphicsItemGroup selection; //= scene->createItemGroup( scene->selectedItems());
-
-    if(scene->selectedItems().size() > 0){
-        std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
-        QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
-        QPointF tr = scene->selectionArea().boundingRect().topRight();
-
-        //new method stores complete box
-        QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
-        QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y()), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x(), t.y()), 1);
-        r2d2::Box box(leftBottom, rightTop);
-
-        selectedBox = box;
-     }
 }
+
+
 
 bool mapView::event(QEvent *event)
 {
@@ -195,8 +181,6 @@ bool mapView::event(QEvent *event)
                 default:
             break;
             }
-        //std::cout<<"map view event type"<< event->type()<<std::endl;
-        //fflush(stdout);
     return QGraphicsView::event(event);
 }
 
@@ -236,11 +220,11 @@ void mapView::loadMapFile(string file)
     {
         map = new r2d2::ArrayBoxMap;
         map->load(file);
+        recenterMap();
         drawMap();
     }
 
 void mapView::saveMapFile(std::string file){
-    //map = new r2d2::BoxMap;
     map->save(file);
 
 }
@@ -307,28 +291,20 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
 
 void mapView::drawMap(){
         scene->clear();
-        resetScale();
-        scene->addOriginOffset(250,250);
-        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER)));
-
-    //TODO: Fix this so it returns the view rect in scene coords
-       std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
-       scene->qrect_2_box_coordinate(sceneRect()));
+        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
+            scene->qrect_2_box_coordinate(sceneRect()));
 
 
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
             const r2d2::Coordinate bottemLeft{
-                                   pair.first.get_bottom_left().get_x()/ 100.0,
-                                   pair.first.get_bottom_left().get_y()/ 100.0,
+                                   pair.first.get_bottom_left().get_x(),
+                                   pair.first.get_bottom_left().get_y(),
                                    r2d2::Length::CENTIMETER * z_bottom};
             const r2d2::Coordinate topRight{
-                                   pair.first.get_top_right().get_x()/ 100.0,
-                                   pair.first.get_top_right().get_y()/ 100.0,
+                                   pair.first.get_top_right().get_x(),
+                                   pair.first.get_top_right().get_y(),
                                    r2d2::Length::CENTIMETER * z_top};
 
             r2d2::Box tempbox(bottemLeft,topRight);
@@ -338,4 +314,15 @@ void mapView::drawMap(){
 
     }
 
+void mapView::recenterMap(){
+        resetScale();
+        scene->addOriginOffset(250,250);
+        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER)));
+    }
 
+void mapView::emptyMap(){
+    map = new r2d2::ArrayBoxMap();
+}
