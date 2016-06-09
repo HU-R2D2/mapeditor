@@ -4,7 +4,7 @@
 mapEditor::mapEditor(QWidget *parent) :
     mapView(parent)
     {
-        edited = false;
+
     }
 
 void mapEditor::removeTile(){

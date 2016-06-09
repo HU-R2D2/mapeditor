@@ -75,6 +75,17 @@ namespace MapTypes{
     };
 }
 
+struct selectionData{
+    QString type;
+    double xtop;
+    double ytop;
+    double xbottom;
+    double ybottom;
+    double width;
+    double height;
+};
+
+
 class mapView: public QGraphicsView
 {
 public:
@@ -100,6 +111,12 @@ public:
     //!
     //! \return boolean value if position in view
     bool mouseInMapView(QPoint p);
+
+    //! \fn     selection mapEditor::filterEvent()
+    //!
+    //! \brief  applies the scale and rotation values
+    //!         as a transform over the current scene
+    selectionData getSelectionData();
 
     //! \fn     void mapEditor::deselectTiles()
     //!
@@ -254,6 +271,10 @@ public:
     //! \param  bool if set false does not recenter the map
     void drawBox(r2d2::Box box, int tileSize = 10, bool centeron = true);
 
+    int getMaxZoom();
+
+    int getMinZoom();
+
 private:
 
     //! scene dimensions
@@ -282,7 +303,7 @@ protected:
     //! \param  QObject to check if event is from scrollbars
     bool eventFilter(QObject *object, QEvent *event);
 
-    //! \fn     bool mapEditor::filterEvent()
+    //! \fn     bool mapEditor::updateTransform()
     //!
     //! \brief  applies the scale and rotation values
     //!         as a transform over the current scene
@@ -291,9 +312,9 @@ protected:
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
-    qreal zoomSpeed = 0.05f;
-    qreal maxScale  = 20.0f;
-    qreal minScale  = 0.001f;
+    qreal maxScale  = 1.0f;
+    qreal minScale  = 0.01f;
+    qreal zoomSpeed = maxScale / 100;
 
     //! Scalesize default is half of the scale range
     qreal scaleSize = (maxScale / 2) - minScale;
@@ -302,6 +323,7 @@ protected:
     int z_bottom = 0;
     int z_top = 1;
 
+    selectionData selData;
     //! list of selected boxes
     r2d2::Box selectedBox;
     };

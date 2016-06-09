@@ -83,6 +83,7 @@ protected:
     //! Catches all events and returns true when a event is caught.
     bool eventFilter(QObject *object, QEvent *event);
 private slots:
+    void selectionChanged();
 
     //! Opens the RoboRescue wiki page on click.
     void on_actionRoboRescue_wiki_triggered();
@@ -132,6 +133,8 @@ private:
     r2d2::SaveLoadMap * map;
 
     std::string fileName_std = "";
+
+    QString double_coord_2_QString(double x, double y);
 };
 
 #endif // MAINWINDOW_HPP

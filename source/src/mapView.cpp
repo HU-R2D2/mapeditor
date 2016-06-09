@@ -77,7 +77,6 @@ void mapView::decreaseScale(){
     scaleSize -= zoomSpeed;
     if(scaleSize < minScale){
         scaleSize = minScale;
-
     }
     updateTransform();
     //checkSceneBorder();
@@ -86,7 +85,7 @@ void mapView::decreaseScale(){
 int mapView::getScale(){
     float normalizer = maxScale / 1;
     // multiply with 200 to make center of the scale range 100%
-    return (scaleSize / normalizer) * 200;
+    return scaleSize * 100 / maxScale;
 }
 
 void mapView::resetScale(){
@@ -152,7 +151,36 @@ void mapView::updateSelection(){
 
 }
 
+selectionData mapView::getSelectionData(){
+    QRectF selection = scene->selectionArea().boundingRect();
+    r2d2::Box mapBox(scene->qrect_2_box_coordinate(selection));
+    r2d2::BoxInfo bi = map->get_box_info(mapBox);
+    switch(getTileType(bi)){
+        case MapTypes::TileType::EMPTY:
+            selData.type = QString("Navigatable");
+            break;
+        case MapTypes::TileType::BLOCKED:
+            selData.type = QString("Blocked");
+            break;
+        case MapTypes::TileType::MIXED:
+            selData.type = QString("Mixed");
+            break;
+        default:
+            selData.type = QString("Unknown");
+            break;
+    }
 
+    r2d2::Coordinate topLeft(scene->qpoint_2_box_coordinate(selection.topLeft(),0.0));
+    r2d2::Coordinate bottomRight(scene->qpoint_2_box_coordinate(selection.bottomRight(),1.0));
+
+    selData.xtop = topLeft.get_x()/r2d2::Length::CENTIMETER;
+    selData.ytop = topLeft.get_y()/r2d2::Length::CENTIMETER;
+    selData.xbottom = bottomRight.get_x()/r2d2::Length::CENTIMETER;
+    selData.ybottom = bottomRight.get_y()/r2d2::Length::CENTIMETER;
+    selData.width = selection.width();
+    selData.height = selection.height();
+    return selData;
+}
 
 bool mapView::event(QEvent *event)
 {
@@ -325,4 +353,12 @@ void mapView::recenterMap(){
 
 void mapView::emptyMap(){
     map = new r2d2::ArrayBoxMap();
+}
+
+int mapView::getMaxZoom(){
+    return floor(maxScale);
+}
+
+int mapView::getMinZoom(){
+    return ceil(minScale);
 }

@@ -29,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
+
+    connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+
+    //ui zoomspeed range setup
+    //ui->zoomSpeedSlider->setMaximum(floor(ui->graphicsView->getMaxZoom()/10));
+    //ui->zoomSpeedSlider->setMinimum(floor(1));
 }
 
 MainWindow::~MainWindow()
@@ -94,17 +100,18 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 {
-        if(activateSelect){
-                ui->actionPan->setChecked(false);
-                ui->graphicsView->setSelectable(true);
-                ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-                //ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
-                ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
-        }
-        else{
-                ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-                ui->graphicsView->setSelectable(false);
-            }
+    if(activateSelect){
+        ui->actionPan->setChecked(false);
+        ui->graphicsView->setSelectable(true);
+        ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+        ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
+        //ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
+        //std::cout << ui->graphicsView->scene->selectedItems().size() << std::endl;
+    }
+    else{
+        ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+        ui->graphicsView->setSelectable(false);
+    }
 }
 
 bool MainWindow::eventFilter(QObject *, QEvent *event)
@@ -137,11 +144,8 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 
 
-
 void MainWindow::on_Set_clicked()
 {
-
-
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
     ui->graphicsView->drawMap();
@@ -246,9 +250,27 @@ void MainWindow::on_actionDebug_triggered()
 
 }
 
+QString MainWindow::double_coord_2_QString(double x, double y){
+    std::string xstr(to_string(roundf(x * 100)/100));
+    std::string ystr(to_string(roundf(y * 100)/100));
+    return QString::fromStdString("( "+
+        xstr.substr(0, xstr.size()-4) + ", " +
+        ystr.substr(0, ystr.size()-4) + " )"
+    );
+}
+
 void MainWindow::on_Delete_pressed()
 {
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
     ui->graphicsView->drawMap();
+}
+
+void MainWindow::selectionChanged(){
+    selectionData data = ui->graphicsView->getSelectionData();
+    std::cout << "Updated boxinfo" << std::endl;
+    ui->bd_type->setText(data.type);
+    ui->bd_topl->setText(double_coord_2_QString(data.xtop, data.ytop));
+    ui->bd_botr->setText(double_coord_2_QString(data.xbottom, data.ybottom));
+    ui->bd_dimension->setText(double_coord_2_QString(data.width, data.height));
 }

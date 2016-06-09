@@ -155,7 +155,6 @@ public:
     //! \return returns true if item is not an axis.
     bool isTile(QGraphicsItem * item);
 
-
     //! \fn     bool viewScene::box_coordinate_2_qpoint()
     //!
     //! \brief translates an map coordinate to an scene QPoint (map2scene)
@@ -195,6 +194,6 @@ public:
     //! \return map box
     r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0, double max_z = 1);
 
-    };
+};
 
 #endif // VIEWSCENE_HPP

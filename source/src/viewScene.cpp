@@ -21,7 +21,7 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
 
 void viewScene::drawAxes()
     {
-        QPen pen(Qt::red);
+        QPen pen(Qt::blue);
         pen.setWidth(2);
         pen.setCosmetic(true);
         delete xAxis;
