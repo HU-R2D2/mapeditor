@@ -320,11 +320,11 @@ void mapView::drawSingleBox(r2d2::Box box, r2d2::BoxInfo info){
     const r2d2::Coordinate bottemLeft{
                           box.get_bottom_left().get_x() ,
                            box.get_bottom_left().get_y() ,
-                            r2d2::Length::CENTIMETER * 0};
+                            r2d2::Length::CENTIMETER * z_bottom};
     const r2d2::Coordinate topRight{
                            box.get_top_right().get_x() ,
                            box.get_top_right().get_y() ,
-                           r2d2::Length::CENTIMETER * 0};
+                           r2d2::Length::CENTIMETER * z_top};
 
     r2d2::Box tempbox(bottemLeft,topRight);
     scene->drawTile(tempbox, tileColors[getTileType(info)]);

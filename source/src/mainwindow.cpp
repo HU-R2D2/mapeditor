@@ -248,5 +248,5 @@ void MainWindow::on_Delete_pressed()
 {
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
-    //ui->graphicsView->drawMap();
+    ui->graphicsView->drawMap();
 }
