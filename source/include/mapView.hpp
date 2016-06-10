@@ -50,9 +50,9 @@
 
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
-#include "../../../map/source/include/MapInterface.hpp"
-#include "../../../map/source/include/BoxMap.hpp"
-#include "../../map/source/include/ArrayBoxMap.hpp"
+#include "MapInterface.hpp"
+#include "BoxMap.hpp"
+#include "ArrayBoxMap.hpp"
 #include "Box.hpp"
 #include "Coordinate.hpp"
 #include "Translation.hpp"
