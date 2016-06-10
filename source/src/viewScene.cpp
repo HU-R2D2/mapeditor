@@ -1,4 +1,4 @@
-#include "../include/viewScene.hpp"
+#include "viewScene.hpp"
 
 viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
     {
@@ -76,6 +76,7 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     QRectF tempRect = box_tile_2_qrect(box);
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setBrush(* new QBrush(color));
+    //Enable line below to NOT box borders
     //block->setPen(Qt::NoPen);
     block->setRect(0,0,tempRect.width(),tempRect.height());
     block->setPos(tempRect.x(),tempRect.y());

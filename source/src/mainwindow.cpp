@@ -133,9 +133,6 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
         ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
         ui->graphicsView->setRubberBandSelectionMode(
                     Qt::IntersectsItemBoundingRect);
-        //ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
-        //std::cout << ui->graphicsView->scene->selectedItems().size()
-        //<< std::endl;
     }
     else{
         ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
@@ -157,10 +154,12 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                         qpoint_2_box_coordinate(gsme->scenePos());
                 ui->xposLabel->setText(
                             QString::number(
-                                mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
+                                mouse_pos_in_map.get_x()/
+                                r2d2::Length::CENTIMETER));
                 ui->yposLabel->setText(
                             QString::number(
-                                mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
+                                mouse_pos_in_map.get_y()/
+                                r2d2::Length::CENTIMETER));
 
                 // selectionchanged is only fired when over selectable items,
                 // to keep updating selection data whe need to manualy trigger

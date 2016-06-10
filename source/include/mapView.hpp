@@ -10,8 +10,9 @@
 //! \author Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
 //!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 12-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for mapView
 //!
 //! This is the header file for mapView
@@ -75,7 +76,7 @@ namespace MapTypes{
         UNKNOWN, MIXED, BLOCKED, EMPTY
     };
 }
-
+//All the data that is used for getting a selection in the scene
 struct selectionData{
     QString type;
     double xtop;
@@ -211,6 +212,12 @@ public:
     //!
     //! \param  float value is the desired z top value
     void set_z_top(float value);
+
+    //! \fn     void mapEditor::saveMapFile()
+    //!
+    //! \brief  saves a map in a file with the name of filename
+    //!
+    //! \param  string of path to map for io
     void saveMapFile(std::string filename);
 
     //! viewscene scene on which we draw
@@ -253,7 +260,8 @@ public:
 
     //! \fn     void mapView::mouseReleaseEvent()
     //!
-    //! \brief  used to define what should happen when a mouse button gets released
+    //! \brief  used to define what should happen when a mouse button gets
+    //!         released
     //!
     //! \param event the event that occured
     void mouseReleaseEvent(QMouseEvent* event);

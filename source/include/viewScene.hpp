@@ -10,8 +10,9 @@
 //! \author Koen de Guijter, 1671103
 //!         Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 16-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for viewScene
 //!
 //! This is the header file for viewScene
@@ -65,7 +66,7 @@
 #include "Coordinate.hpp"
 #include "Translation.hpp"
 #include "Length.hpp"
-#include "../../../map/source/include/MapInterface.hpp"
+#include "MapInterface.hpp"
 
 class viewScene : public QGraphicsScene
     {

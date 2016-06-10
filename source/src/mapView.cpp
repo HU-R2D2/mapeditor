@@ -70,7 +70,6 @@ void mapView::increaseZoom(){
     }
 
     updateTransform();
-    //checkSceneBorder();
 }
 
 void mapView::decreaseZoom(){
@@ -79,7 +78,6 @@ void mapView::decreaseZoom(){
         scaleSize = minZoom;
     }
     updateTransform();
-    //checkSceneBorder();
 }
 
 int mapView::getScale(){
@@ -273,12 +271,6 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
     checkSceneBorder();
     switch(event->type()){
 
-       case QEvent::GraphicsSceneMove:{
-         std::cout << "MOVED THE SCENE";
-         break;
-
-       }
-
        case QEvent::Wheel:
 
            if (object == verticalScrollBar()){//catch
@@ -294,11 +286,6 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
            else if(object == horizontalScrollBar()){//catch horizontal scroll
                return true;}
            break;
-       case QEvent::GraphicsSceneMouseMove:
-           {
-           return true;
-           break;
-           }
         default:
             break;
     }
@@ -323,10 +310,6 @@ void mapView::drawMap(){
         QPointF topLeft(mapToScene(QPoint(0,height())));
         QPointF bottemRight(mapToScene(QPoint(width(),0)));
 
-        std::cout << "debug info: " << scene->
-                     qrect_2_box_coordinate(QRectF(topLeft,bottemRight)) <<
-                     std::endl;
-
         r2d2::Box screenToSceneCoordinate(scene->
                                           qrect_2_box_coordinate(
                                               QRectF(topLeft, bottemRight)));
@@ -334,14 +317,6 @@ void mapView::drawMap(){
         //This renders only what is in the view after scrolling
         std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen =
                 map->get_intersecting(screenToSceneCoordinate);
-
-        //This renders everything that is the scene
-        //(very laggy when using a map with lots of obstacles)
-        //std::vector<std::pair<r2d2::Box, r2d2::BoxInfo >>
-        //boxesOnScreen = map->get_intersecting(map->get_map_bounding_box());
-
-        std::cout << boxesOnScreen.size() << " " << screenToSceneCoordinate <<
-                     std::endl;
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){

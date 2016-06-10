@@ -9,8 +9,9 @@
 //!         Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
 //!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 12-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for mainwindow
 //!
 //! This is the header file for mainwindow
