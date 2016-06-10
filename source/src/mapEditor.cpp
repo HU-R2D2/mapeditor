@@ -1,4 +1,4 @@
-#include "../include/mapEditor.hpp"
+#include "mapEditor.hpp"
 
 
 mapEditor::mapEditor(QWidget *parent) :

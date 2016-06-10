@@ -590,12 +590,12 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>251</width>
+      <width>271</width>
       <height>151</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="fileData">
      <attribute name="title">
@@ -606,8 +606,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>231</width>
-        <height>109</height>
+        <width>251</width>
+        <height>101</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -620,7 +620,7 @@
           </font>
          </property>
          <property name="text">
-          <string>name:</string>
+          <string>Name:</string>
          </property>
         </widget>
        </item>
@@ -632,7 +632,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="fdl_type">
+        <widget class="QLabel" name="fdl_path">
          <property name="font">
           <font>
            <family>MS Shell Dlg 2</family>
@@ -641,54 +641,29 @@
           </font>
          </property>
          <property name="text">
-          <string>Type:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="fdl_date">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Date:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="fdl_loaded">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Loaded:</string>
+          <string>Path:</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="fd_type">
+        <widget class="QLabel" name="fd_path">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
          <property name="text">
           <string>-</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="fd_date">
-         <property name="text">
-          <string>-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="fd_loaded">
-         <property name="text">
-          <string>-</string>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -704,7 +679,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>231</width>
+        <width>251</width>
         <height>109</height>
        </rect>
       </property>
@@ -739,7 +714,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Top left</string>
+          <string>Top (L)</string>
          </property>
         </widget>
        </item>
@@ -752,7 +727,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Bottom Right</string>
+          <string>Bottom (R)</string>
          </property>
         </widget>
        </item>
@@ -765,7 +740,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Dimensions</string>
+          <string>Size</string>
          </property>
         </widget>
        </item>
@@ -1185,7 +1160,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1241,6 +1216,9 @@
   <action name="actionSave_as">
    <property name="text">
     <string>Save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionRoboRescue_wiki">

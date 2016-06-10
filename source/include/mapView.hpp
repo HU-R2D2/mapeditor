@@ -131,12 +131,12 @@ public:
     //! \fn     void mapEditor::increaseScale()
     //!
     //! \brief  increases the scale of the map to increase size of boxes (zooming in)
-    void increaseScale();
+    void increaseZoom();
 
     //! \fn     void mapEditor::decreaseScale()
     //!
     //! \brief  decreases the scale of the map to decrease size of boxes (zooming out)
-    void decreaseScale();
+    void decreaseZoom();
 
     //! \fn     void mapEditor::increaseRotation()
     //!
@@ -271,8 +271,18 @@ public:
     //! \param  bool if set false does not recenter the map
     void drawBox(r2d2::Box box, int tileSize = 10, bool centeron = true);
 
+    //! \fn     void mapEditor::getMaxZoom()
+    //!
+    //! \brief  get the maximum zoomlevel
+    //!
+    //! \return returns integer value of max zoom
     int getMaxZoom();
 
+    //! \fn     void mapEditor::getMinZoom()
+    //!
+    //! \brief  get the min zoomlevel
+    //!
+    //! \return returns integer value of min zoom
     int getMinZoom();
 
 private:
@@ -293,11 +303,14 @@ protected:
     //! \param  QEvent that is received from parent
     bool event(QEvent *event);
 
-    //! \fn     bool mapEditor::filterEvent()
+    //! \fn     bool mapEditor::eventFilter()
     //!
     //! \brief  receives events and translates the scrollwheel movement
     //!         in qt known as the scrollbar events to zooming with
     //!         the increase and decrease zoom functions
+    //!         * return true if you want to stop the event from going to other objects
+    //!         * return false if you you do not want to kill the event.
+    //!         * event filter order parent->child->child'sChild->etc...
     //!
     //! \param  QEvent that is received from parent
     //! \param  QObject to check if event is from scrollbars
@@ -312,12 +325,12 @@ protected:
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
-    qreal maxScale  = 1.0f;
-    qreal minScale  = 0.01f;
-    qreal zoomSpeed = maxScale / 100;
+    qreal maxZoom  = 1.0f;
+    qreal minZoom  = 0.01f;
+    qreal zoomSpeed = maxZoom / 100;
 
     //! Scalesize default is half of the scale range
-    qreal scaleSize = (maxScale / 2) - minScale;
+    qreal scaleSize = (maxZoom / 2) - minZoom;
 
     //! z dimension variables
     int z_bottom = 0;

@@ -79,53 +79,135 @@ public:
     //! Deconstructor for MainWindow.
     ~MainWindow();
 
+    //! \fn setTitleState();
+    //!
+    //! \brief set window title with the state of the map file
+    void setTitleState(bool fileLoaded = false, bool fileEdited = false, bool fileSaved = false);
 protected:
     //! Catches all events and returns true when a event is caught.
     bool eventFilter(QObject *object, QEvent *event);
 private slots:
+    //! The following methods are purely for UI purposes
+
+    //! \fn selectionChanged()
+    //!
+    //! \brief receiver for selectionChanged signal of secene
+    //!        updates ui data fields with data of the current selection
     void selectionChanged();
 
-    //! Opens the RoboRescue wiki page on click.
+    //! \fn on_actionRoboRescue_wiki_triggered();
+    //!
+    //! \brief receiver for ui signal button clicked wiki
+    //!        opens wiki page in browser
+    //!        Opens the RoboRescue wiki page on click.
     void on_actionRoboRescue_wiki_triggered();
 
-    //! Saves the edited map of a location of choice.
+    //! \fn on_actionSave_as_triggered();
+    //!
+    //! \brief receiver for ui signal button clicked save
+    //!        Saves the edited map of a location of choice.
     void on_actionSave_as_triggered();
 
+    //! \fn on_actionLoad_triggered();
+    //!
+    //! \brief receiver for ui signal menu item clicked load
+    //!        opens dialog for file(map) selection, to load a map
     void on_actionLoad_triggered();
 
+    //! \fn    on_zoomInButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked zoomInButton
+    //!        increases the zoom and updates the displayed zoom value
     void on_zoomInButton_clicked();
 
+    //! \fn    on_zoomInButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked zoomOutButton
+    //!        decreases the zoom and updates the displayed zoom value
     void on_zoomOutButtom_clicked();
 
-    //! Enables the drag mode for the map viewer
+    //! \fn    on_actionPan_toggled(bool);
+    //!
+    //! \brief receiver for ui signal button clicked dragmode
+    //!        Enables the drag mode for the map viewer
     void on_actionPan_toggled(bool);
 
+    //! \fn    on_clearButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked clear view
+    //!        calls scene clear
     void on_clearButton_clicked();
 
+    //! \fn    on_actionSave_triggered();
+    //!
+    //! \brief receiver for ui signal button clicked save
+    //!        calls mapinterface save function to save the current map of mapView
     void on_actionSave_triggered();
 
+    //! \fn    on_zoomResetButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked zoom reset
+    //!
     void on_zoomResetButton_clicked();
 
+    //! \fn    on_rotateLeftButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked rotation to left
+    //!        increments rotation transform value with default value
     void on_rotateLeftButton_clicked();
 
+    //! \fn    on_rotateRightButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked rotate to right
+    //!        decrements rotation transform value with default value
     void on_rotateRightButton_clicked();
 
+    //! \fn    on_resetRotationButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked reset rotation
+    //!        sets rotation value to zero and updates transform
     void on_resetRotationButton_clicked();
 
+    //! \fn    on_zoomSpeedSlider_valueChanged();
+    //!
+    //! \brief receiver for ui signal from zoomspeed slider
+    //!        set zoomspeed value equal to the slider value
     void on_zoomSpeedSlider_valueChanged(int value);
 
+    //! \fn    on_actionSelectMode_toggled();
+    //!
+    //! \brief receiver for ui signal button clicked
     void on_actionSelectMode_toggled(bool arg1);
 
+    //! \fn    on_goNavigate_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked goNav
+    //!        centers the viewport on the given x y values
     void on_goNavigate_clicked();
 
+    //! \fn    on_actionDebug_triggered();
+    //!
+    //! \brief receiver for ui signal button clicked
+    //!        enable mapview debug options
     void on_actionDebug_triggered();
 
+    //! \fn    on_Set_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked set
+    //!        calls the mapeditor edit function to add a box
     void on_Set_clicked();
 
+    //! \fn on_placeTagButton_clicked();
+    //!
+    //! \brief receiver for ui signal button clicked setTag
+    //!        calls the mapeditor edit function to add a tmp comment
     void on_placeTagButton_clicked();
 
+    //! \fn on_Delete_pressed();
+    //!
+    //! \brief receiver for ui signal button clicked delete
+    //!        calls the mapeditor delete function to remove boxes
     void on_Delete_pressed();
-
 
 private:
     Ui::MainWindow *ui;
@@ -134,7 +216,23 @@ private:
 
     std::string fileName_std = "";
 
+    //! \fn    double_coord_2_QString()
+    //!
+    //! \brief creates a QT printable string displaying to double values
+    //!        rounded up to 2 decimals, for ui purposes
     QString double_coord_2_QString(double x, double y);
+
+    //! \fn updateFileData();
+    //!
+    //! \brief updates file and path variables of currently selected file
+    void updateFileData();
+
+    std::string file;
+
+    std::string path;
+
+    bool edited = false;
+
 };
 
 #endif // MAINWINDOW_HPP
