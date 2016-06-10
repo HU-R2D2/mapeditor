@@ -21,7 +21,7 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
 
 void viewScene::drawAxes()
     {
-        QPen pen(Qt::red);
+        QPen pen(Qt::blue);
         pen.setWidth(2);
         pen.setCosmetic(true);
         delete xAxis;
@@ -69,6 +69,7 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     block->setPen(Qt::NoPen);
     block->setRect(0,0,tempRect.width(),tempRect.height());
     block->setPos(tempRect.x(),tempRect.y());
+    block->setVisible(true);
     addItem(block);
     }
 

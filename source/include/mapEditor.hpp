@@ -75,19 +75,11 @@ public:
     //! \param  type is the Qstring name of the boxinfo type
     void editTile(QString type);
 
-    //! \fn     void mapEditor::displayEdit()
-    //!
-    //! \brief  deletes old boxes from the view and replaces them with the new box info
-    //!
-    //! \param  type is the Qstring name of the boxinfo type
-    void displayEdit();
-
 signals:
 
 public slots:
 
 private:
-    bool edited;
     //! Temporary storage for boxes
     std::vector<std::pair<r2d2::Box, r2d2::BoxInfo> > editBuffer;
     };

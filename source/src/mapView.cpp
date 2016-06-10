@@ -1,5 +1,5 @@
-#include "../include/mapView.hpp"
-#include "../../map/source/include/ArrayBoxMap.hpp"
+#include "mapView.hpp"
+#include "ArrayBoxMap.hpp"
 #include <iostream>
 #include <QMouseEvent>
 #include <QScrollBar>
@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <QtGui>
 #include <QMutex>
+#include <Qrect>
 
 QMutex EventRecursion;
 
@@ -32,27 +33,21 @@ mapView::mapView(QWidget *parent):
 
     p.setColor(QPalette::Highlight, Qt::red);
 
-
     scene->setPalette(p);
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
-    //editor = new mapEditor(this);
     show();
 
-    //set default scale
+    //set default zoom
     resetScale();
     scene->installEventFilter(this);
     verticalScrollBar()->installEventFilter(this);
     horizontalScrollBar()->installEventFilter(this);
     setMouseTracking(true);
 
-    scene->clear();
-    scene->addOriginOffset(250,250);
-    centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                0*r2d2::Length::CENTIMETER,
-                                                0*r2d2::Length::CENTIMETER,
-                                                0*r2d2::Length::CENTIMETER)));
+
+    recenterMap();
 }
 
 mapView::~mapView(){
@@ -67,35 +62,32 @@ void mapView::setSelectable(bool state){
     }
 }
 
-void mapView::increaseScale(){
+void mapView::increaseZoom(){
     scaleSize += zoomSpeed;
-    if(scaleSize > maxScale){
-
-        scaleSize = maxScale;
+    if(scaleSize > maxZoom){
+        scaleSize = maxZoom;
     }
 
     updateTransform();
     //checkSceneBorder();
 }
 
-void mapView::decreaseScale(){
+void mapView::decreaseZoom(){
     scaleSize -= zoomSpeed;
-    if(scaleSize < minScale){
-        scaleSize = minScale;
-
+    if(scaleSize < minZoom){
+        scaleSize = minZoom;
     }
     updateTransform();
     //checkSceneBorder();
 }
 
 int mapView::getScale(){
-    float normalizer = maxScale / 1;
-    // multiply with 200 to make center of the scale range 100%
-    return (scaleSize / normalizer) * 200;
+    //give range 0-100%
+    return scaleSize * 100 / maxZoom;
 }
 
 void mapView::resetScale(){
-    scaleSize = (maxScale / 2);
+    scaleSize = (maxZoom / 2);
     updateTransform();
 }
 
@@ -126,6 +118,7 @@ void mapView::updateTransform(){
     resetTransform();
     rotate(rotation);
     scale(scaleSize, scaleSize);
+    drawMap();
 }
 
 void mapView::set_z_bottom(float value)
@@ -149,23 +142,42 @@ void mapView::deselectTiles(){
 }
 
 void mapView::updateSelection(){
+    QRectF newBoxArea = scene->selectionArea().boundingRect();
+    r2d2::Box box(scene->qpoint_2_box_coordinate(newBoxArea.bottomLeft()), scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
+    selectedBox = box;
+    drawMap();
 
-    //QGraphicsItemGroup selection; //= scene->createItemGroup( scene->selectedItems());
+}
 
-    if(scene->selectedItems().size() > 0){
-        std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
-        QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
-        QPointF tr = scene->selectionArea().boundingRect().topRight();
+selectionData mapView::getSelectionData(){
+    QRectF selection = scene->selectionArea().boundingRect();
+    r2d2::Box mapBox(scene->qrect_2_box_coordinate(selection));
+    r2d2::BoxInfo bi = map->get_box_info(mapBox);
+    switch(getTileType(bi)){
+        case MapTypes::TileType::EMPTY:
+            selData.type = QString("Navigatable");
+            break;
+        case MapTypes::TileType::BLOCKED:
+            selData.type = QString("Blocked");
+            break;
+        case MapTypes::TileType::MIXED:
+            selData.type = QString("Mixed");
+            break;
+        default:
+            selData.type = QString("Unknown");
+            break;
+    }
 
-        //new method stores complete box
-        QPointF b = scene->itemAt(QPointF(ceil(bl.x()), ceil(bl.y())), transform())->pos();
-        QPointF t = scene->itemAt(QPointF(ceil(tr.x()), ceil(tr.y())), transform())->pos();
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y()), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x(), t.y()), 1);
-        r2d2::Box box(leftBottom, rightTop);
+    r2d2::Coordinate topLeft(scene->qpoint_2_box_coordinate(selection.topLeft(),0.0));
+    r2d2::Coordinate bottomRight(scene->qpoint_2_box_coordinate(selection.bottomRight(),1.0));
 
-        selectedBox = box;
-     }
+    selData.xtop = topLeft.get_x()/r2d2::Length::CENTIMETER;
+    selData.ytop = topLeft.get_y()/r2d2::Length::CENTIMETER;
+    selData.xbottom = bottomRight.get_x()/r2d2::Length::CENTIMETER;
+    selData.ybottom = bottomRight.get_y()/r2d2::Length::CENTIMETER;
+    selData.width = selection.width();
+    selData.height = selection.height();
+    return selData;
 }
 
 bool mapView::event(QEvent *event)
@@ -193,66 +205,58 @@ bool mapView::event(QEvent *event)
                     break;}
 
                 default:
-            break;
+                    break;
             }
-        //std::cout<<"map view event type"<< event->type()<<std::endl;
-        //fflush(stdout);
     return QGraphicsView::event(event);
 }
 
 void mapView::checkSceneBorder(){
-        QPointF startPoint = mapToScene(QPoint(0,0));
-        QPointF endPoint = mapToScene(QPoint(width(),height()));
-        int stepSize = endPoint.x()-startPoint.x();
+    QPointF startPoint = mapToScene(QPoint(0,0));
+    QPointF endPoint = mapToScene(QPoint(width(),height()));
+    int stepSize = endPoint.x()-startPoint.x();
 
-        if(startPoint.x() < stepSize && EventRecursion.tryLock()){
-           //std::cout << "too close to startPoint.x" << std::endl;
-           QPointF center = mapToScene(viewport()->rect().center());
-           scene->addOriginOffset(stepSize,0);
-           centerOn(QPointF(stepSize,0)+center);//causes an event (recursion)
-           EventRecursion.unlock();
-        }
-        if(startPoint.y() < stepSize && EventRecursion.tryLock()){
-            //std::cout << "too close to startPoint.y" << std::endl;
-            QPointF center = mapToScene(viewport()->rect().center());
-            scene->addOriginOffset(0,stepSize);
-            centerOn(QPointF(0,stepSize)+center);//causes an event (recursion)
-            EventRecursion.unlock();
-        }
-        if(endPoint.x() > (scene->width() - stepSize)){
-           //std::cout << "too close to endPoint.x" << std::endl;
-           scene->setSceneRect(0,0,scene->width() + stepSize, scene->height());
-           scene->drawAxes();
-        }
-
-        if(endPoint.y() > (scene->height() - stepSize)){
-            //std::cout << "too close to endPoint.y" << std::endl;
-            scene->setSceneRect(0,0,scene->width(), scene->height()+stepSize);
-            scene->drawAxes();
-        }
+    if(startPoint.x() < stepSize && EventRecursion.tryLock()){
+        //std::cout << "too close to startPoint.x" << std::endl;
+        QPointF center = mapToScene(viewport()->rect().center());
+        scene->addOriginOffset(stepSize,0);
+        centerOn(QPointF(stepSize,0)+center);//causes an event (recursion)
+        EventRecursion.unlock();
     }
+    if(startPoint.y() < stepSize && EventRecursion.tryLock()){
+        //std::cout << "too close to startPoint.y" << std::endl;
+        QPointF center = mapToScene(viewport()->rect().center());
+        scene->addOriginOffset(0,stepSize);
+        centerOn(QPointF(0,stepSize)+center);//causes an event (recursion)
+        EventRecursion.unlock();
+    }
+    if(endPoint.x() > (scene->width() - stepSize)){
+        //std::cout << "too close to endPoint.x" << std::endl;
+        scene->setSceneRect(0,0,scene->width() + stepSize, scene->height());
+        scene->drawAxes();
+    }
+
+    if(endPoint.y() > (scene->height() - stepSize)){
+        //std::cout << "too close to endPoint.y" << std::endl;
+        scene->setSceneRect(0,0,scene->width(), scene->height()+stepSize);
+        scene->drawAxes();
+    }
+}
 
 void mapView::loadMapFile(string file)
     {
         map = new r2d2::ArrayBoxMap;
         map->load(file);
+        recenterMap();
         drawMap();
     }
 
 void mapView::saveMapFile(std::string file){
-    //map = new r2d2::BoxMap;
     map->save(file);
 
 }
 
 bool mapView::eventFilter(QObject * object, QEvent * event){
-        //return true if you want to stop the event from going to other objects
-        //return false if you you do not want to kill the event.
-        //event filter order parent->child->child'sChild->etc...
-
-        checkSceneBorder();
-
-
+    checkSceneBorder();
     switch(event->type()){
 
        case QEvent::GraphicsSceneDragEnter:{
@@ -267,9 +271,9 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
                QWheelEvent* we = static_cast<QWheelEvent*>(event);
                int num = we->delta();
                if(num < 0){
-                   decreaseScale();
+                   decreaseZoom();
                }else{
-                   increaseScale();
+                   increaseZoom();
                }
                return true;
                }
@@ -278,11 +282,6 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
            break;
        case QEvent::GraphicsSceneMouseMove:
            {
-           //NOTE: this will give scene pos without the offset (aka, not real map pos)
-           //Example code for scene mouse pos:
-           //QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-           //std::cout<< "mouse pos in scene is: x" << gsme->scenePos().x() << " y" << gsme->scenePos().y() << std::endl;
-
            return true;
            break;
            }
@@ -307,28 +306,20 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
 
 void mapView::drawMap(){
         scene->clear();
-        resetScale();
-        scene->addOriginOffset(250,250);
-        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER)));
-
-    //TODO: Fix this so it returns the view rect in scene coords
-       std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
-       scene->qrect_2_box_coordinate(sceneRect()));
+        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
+            scene->qrect_2_box_coordinate(sceneRect()));
 
 
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
             const r2d2::Coordinate bottemLeft{
-                                   pair.first.get_bottom_left().get_x()/ 100.0,
-                                   pair.first.get_bottom_left().get_y()/ 100.0,
+                                   pair.first.get_bottom_left().get_x(),
+                                   pair.first.get_bottom_left().get_y(),
                                    r2d2::Length::CENTIMETER * z_bottom};
             const r2d2::Coordinate topRight{
-                                   pair.first.get_top_right().get_x()/ 100.0,
-                                   pair.first.get_top_right().get_y()/ 100.0,
+                                   pair.first.get_top_right().get_x(),
+                                   pair.first.get_top_right().get_y(),
                                    r2d2::Length::CENTIMETER * z_top};
 
             r2d2::Box tempbox(bottemLeft,topRight);
@@ -338,4 +329,21 @@ void mapView::drawMap(){
 
     }
 
+void mapView::recenterMap(){
+        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER)));
+    }
 
+void mapView::emptyMap(){
+    map = new r2d2::ArrayBoxMap();
+}
+
+int mapView::getMaxZoom(){
+    return floor(maxZoom);
+}
+
+int mapView::getMinZoom(){
+    return ceil(minZoom);
+}

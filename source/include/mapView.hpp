@@ -50,8 +50,9 @@
 
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
-#include "../../../map/source/include/MapInterface.hpp"
-#include "../../../map/source/include/BoxMap.hpp"
+#include "MapInterface.hpp"
+#include "BoxMap.hpp"
+#include "ArrayBoxMap.hpp"
 #include "Box.hpp"
 #include "Coordinate.hpp"
 #include "Translation.hpp"
@@ -73,6 +74,17 @@ namespace MapTypes{
         UNKNOWN, MIXED, BLOCKED, EMPTY
     };
 }
+
+struct selectionData{
+    QString type;
+    double xtop;
+    double ytop;
+    double xbottom;
+    double ybottom;
+    double width;
+    double height;
+};
+
 
 class mapView: public QGraphicsView
 {
@@ -100,6 +112,12 @@ public:
     //! \return boolean value if position in view
     bool mouseInMapView(QPoint p);
 
+    //! \fn     selection mapEditor::filterEvent()
+    //!
+    //! \brief  applies the scale and rotation values
+    //!         as a transform over the current scene
+    selectionData getSelectionData();
+
     //! \fn     void mapEditor::deselectTiles()
     //!
     //! \brief  Deselects the selected tiles in the view
@@ -113,12 +131,12 @@ public:
     //! \fn     void mapEditor::increaseScale()
     //!
     //! \brief  increases the scale of the map to increase size of boxes (zooming in)
-    void increaseScale();
+    void increaseZoom();
 
     //! \fn     void mapEditor::decreaseScale()
     //!
     //! \brief  decreases the scale of the map to decrease size of boxes (zooming out)
-    void decreaseScale();
+    void decreaseZoom();
 
     //! \fn     void mapEditor::increaseRotation()
     //!
@@ -210,8 +228,18 @@ public:
 
     //! \fn      mapView::drawMap()
     //!
-    //! \brief   focus viewport on the origin and (re)draw the map
+    //! \brief   (re)draw all the objects the map
     void drawMap();
+
+    //! \fn      mapView::emptyMap()
+    //!
+    //! \brief   replace the current map with a new empty one
+    void emptyMap();
+
+    //! \fn      mapView::recenterMap()
+    //!
+    //! \brief   recenter the map and reset the scale
+    void recenterMap();
 
     //! \fn     TileType mapEditor::getTileType()
     //!
@@ -243,6 +271,20 @@ public:
     //! \param  bool if set false does not recenter the map
     void drawBox(r2d2::Box box, int tileSize = 10, bool centeron = true);
 
+    //! \fn     void mapEditor::getMaxZoom()
+    //!
+    //! \brief  get the maximum zoomlevel
+    //!
+    //! \return returns integer value of max zoom
+    int getMaxZoom();
+
+    //! \fn     void mapEditor::getMinZoom()
+    //!
+    //! \brief  get the min zoomlevel
+    //!
+    //! \return returns integer value of min zoom
+    int getMinZoom();
+
 private:
 
     //! scene dimensions
@@ -251,7 +293,7 @@ private:
 
 protected:
     //! loaded map
-    r2d2::BoxMap * map;
+    r2d2::BoxMap * map = new r2d2::ArrayBoxMap;
 
     //! \fn     bool mapEditor::event()
     //!
@@ -261,17 +303,20 @@ protected:
     //! \param  QEvent that is received from parent
     bool event(QEvent *event);
 
-    //! \fn     bool mapEditor::filterEvent()
+    //! \fn     bool mapEditor::eventFilter()
     //!
     //! \brief  receives events and translates the scrollwheel movement
     //!         in qt known as the scrollbar events to zooming with
     //!         the increase and decrease zoom functions
+    //!         * return true if you want to stop the event from going to other objects
+    //!         * return false if you you do not want to kill the event.
+    //!         * event filter order parent->child->child'sChild->etc...
     //!
     //! \param  QEvent that is received from parent
     //! \param  QObject to check if event is from scrollbars
     bool eventFilter(QObject *object, QEvent *event);
 
-    //! \fn     bool mapEditor::filterEvent()
+    //! \fn     bool mapEditor::updateTransform()
     //!
     //! \brief  applies the scale and rotation values
     //!         as a transform over the current scene
@@ -280,17 +325,18 @@ protected:
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
-    qreal zoomSpeed = 0.05f;
-    qreal maxScale  = 20.0f;
-    qreal minScale  = 0.001f;
+    qreal maxZoom  = 1.0f;
+    qreal minZoom  = 0.01f;
+    qreal zoomSpeed = maxZoom / 100;
 
     //! Scalesize default is half of the scale range
-    qreal scaleSize = (maxScale / 2) - minScale;
+    qreal scaleSize = (maxZoom / 2) - minZoom;
 
     //! z dimension variables
     int z_bottom = 0;
     int z_top = 1;
 
+    selectionData selData;
     //! list of selected boxes
     r2d2::Box selectedBox;
     };
