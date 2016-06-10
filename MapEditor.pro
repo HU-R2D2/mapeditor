@@ -44,6 +44,7 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/ArrayBoxMap.hpp
 
 INCLUDEPATH += ../adt/source/include/
+INCLUDEPATH += ../map/source/include/
 INCLUDEPATH += source/include/
 
 FORMS    += source/mainwindow.ui

@@ -1,10 +1,10 @@
-#include "../include/mapEditor.hpp"
+#include "mapEditor.hpp"
 
 
 mapEditor::mapEditor(QWidget *parent) :
     mapView(parent)
     {
-        edited = false;
+
     }
 
 void mapEditor::removeTile(){

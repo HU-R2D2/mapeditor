@@ -131,11 +131,11 @@
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="backgroundBrush">
-     <brush brushstyle="Dense1Pattern">
+     <brush brushstyle="SolidPattern">
       <color alpha="255">
-       <red>230</red>
-       <green>230</green>
-       <blue>230</blue>
+       <red>160</red>
+       <green>160</green>
+       <blue>164</blue>
       </color>
      </brush>
     </property>
@@ -590,7 +590,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>251</width>
+      <width>271</width>
       <height>151</height>
      </rect>
     </property>
@@ -606,8 +606,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>231</width>
-        <height>109</height>
+        <width>251</width>
+        <height>101</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -620,7 +620,7 @@
           </font>
          </property>
          <property name="text">
-          <string>name:</string>
+          <string>Name:</string>
          </property>
         </widget>
        </item>
@@ -632,7 +632,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="fdl_type">
+        <widget class="QLabel" name="fdl_path">
          <property name="font">
           <font>
            <family>MS Shell Dlg 2</family>
@@ -641,54 +641,29 @@
           </font>
          </property>
          <property name="text">
-          <string>Type:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="fdl_date">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Date:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="fdl_loaded">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Loaded:</string>
+          <string>Path:</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="fd_type">
+        <widget class="QLabel" name="fd_path">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
          <property name="text">
           <string>-</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="fd_date">
-         <property name="text">
-          <string>-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="fd_loaded">
-         <property name="text">
-          <string>-</string>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -704,7 +679,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>231</width>
+        <width>251</width>
         <height>109</height>
        </rect>
       </property>
@@ -718,19 +693,19 @@
           </font>
          </property>
          <property name="text">
-          <string>name:</string>
+          <string>Type</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="bd_name">
+        <widget class="QLabel" name="bd_type">
          <property name="text">
           <string>-</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="bdl_type">
+        <widget class="QLabel" name="bdl_topl">
          <property name="font">
           <font>
            <family>MS Shell Dlg 2</family>
@@ -739,12 +714,12 @@
           </font>
          </property>
          <property name="text">
-          <string>Type:</string>
+          <string>Top (L)</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="bdl_date">
+        <widget class="QLabel" name="bdl_botr">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -752,12 +727,12 @@
           </font>
          </property>
          <property name="text">
-          <string>Date:</string>
+          <string>Bottom (R)</string>
          </property>
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="bdl_loaded">
+        <widget class="QLabel" name="bdl_dimension">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -765,26 +740,26 @@
           </font>
          </property>
          <property name="text">
-          <string>Loaded:</string>
+          <string>Size</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="bd_type">
+        <widget class="QLabel" name="bd_topl">
          <property name="text">
           <string>-</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="bd_date">
+        <widget class="QLabel" name="bd_botr">
          <property name="text">
           <string>-</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLabel" name="bd_loaded">
+        <widget class="QLabel" name="bd_dimension">
          <property name="text">
           <string>-</string>
          </property>
@@ -1242,6 +1217,9 @@
    <property name="text">
     <string>Save as</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="actionRoboRescue_wiki">
    <property name="text">
@@ -1319,4 +1297,7 @@
  </tabstops>
  <resources/>
  <connections/>
+ <slots>
+  <slot>selectionChanged()</slot>
+ </slots>
 </ui>
