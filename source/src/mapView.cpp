@@ -34,7 +34,8 @@ mapView::mapView(QWidget *parent):
     p.setColor(QPalette::Highlight, Qt::red);
 
     scene->setPalette(p);
-    std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
+    std::cout << "new Viewer with size: " << windowWidth << " x " <<
+                 windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
     show();
@@ -143,7 +144,9 @@ void mapView::deselectTiles(){
 
 void mapView::updateSelection(){
     QRectF newBoxArea = scene->selectionArea().boundingRect();
-    r2d2::Box box(scene->qpoint_2_box_coordinate(newBoxArea.bottomLeft()), scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
+    r2d2::Box box(scene->qpoint_2_box_coordinate(
+                      newBoxArea.bottomLeft()),
+                  scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
     selectedBox = box;
     drawMap();
 
@@ -168,8 +171,12 @@ selectionData mapView::getSelectionData(){
             break;
     }
 
-    r2d2::Coordinate topLeft(scene->qpoint_2_box_coordinate(selection.topLeft(),0.0));
-    r2d2::Coordinate bottomRight(scene->qpoint_2_box_coordinate(selection.bottomRight(),1.0));
+    r2d2::Coordinate topLeft(scene->
+                             qpoint_2_box_coordinate(
+                                 selection.topLeft(),0.0));
+    r2d2::Coordinate bottomRight(scene->
+                                 qpoint_2_box_coordinate(
+                                     selection.bottomRight(),1.0));
 
     selData.xtop = topLeft.get_x()/r2d2::Length::CENTIMETER;
     selData.ytop = topLeft.get_y()/r2d2::Length::CENTIMETER;
@@ -185,22 +192,27 @@ bool mapView::event(QEvent *event)
         switch(event->type()){
                 case QEvent::KeyPress:{
                     QKeyEvent * ke = static_cast<QKeyEvent*>(event);
-                   // std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+                    // std::cout << "key pressed in @ event filter in
+                    //mainwindow " << ke->key() << std::endl;
                         if(ke->key() == Qt::Key_Down){
                                 int val = verticalScrollBar()->value();
-                                verticalScrollBar()->setValue(val+scrollStepSize);
+                                verticalScrollBar()->setValue(
+                                            val+scrollStepSize);
                             }
                         else if(ke->key() == Qt::Key_Up){
                                 int val = verticalScrollBar()->value();
-                                verticalScrollBar()->setValue(val-scrollStepSize);
+                                verticalScrollBar()->setValue(
+                                            val-scrollStepSize);
                             }
                         else if(ke->key() == Qt::Key_Right){
                                 int val = horizontalScrollBar()->value();
-                                horizontalScrollBar()->setValue(val+scrollStepSize);
+                                horizontalScrollBar()->setValue(
+                                            val+scrollStepSize);
                             }
                         else if(ke->key() == Qt::Key_Left){
                                 int val = horizontalScrollBar()->value();
-                                horizontalScrollBar()->setValue(val-scrollStepSize);
+                                horizontalScrollBar()->setValue(
+                                            val-scrollStepSize);
                             }
                     break;}
 
@@ -311,17 +323,25 @@ void mapView::drawMap(){
         QPointF topLeft(mapToScene(QPoint(0,height())));
         QPointF bottemRight(mapToScene(QPoint(width(),0)));
 
-        std::cout << "debug info: " << scene->qrect_2_box_coordinate(QRectF(topLeft,bottemRight)) << std::endl;
+        std::cout << "debug info: " << scene->
+                     qrect_2_box_coordinate(QRectF(topLeft,bottemRight)) <<
+                     std::endl;
 
-        r2d2::Box screenToSceneCoordinate(scene->qrect_2_box_coordinate(QRectF(topLeft, bottemRight)));
+        r2d2::Box screenToSceneCoordinate(scene->
+                                          qrect_2_box_coordinate(
+                                              QRectF(topLeft, bottemRight)));
 
         //This renders only what is in the view after scrolling
-        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(screenToSceneCoordinate);
+        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen =
+                map->get_intersecting(screenToSceneCoordinate);
 
-        //This renders everything that is the scene (very laggy when using a map with lots of obstacles)
-        //std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(map->get_map_bounding_box());
+        //This renders everything that is the scene
+        //(very laggy when using a map with lots of obstacles)
+        //std::vector<std::pair<r2d2::Box, r2d2::BoxInfo >>
+        //boxesOnScreen = map->get_intersecting(map->get_map_bounding_box());
 
-        std::cout << boxesOnScreen.size() << " " << screenToSceneCoordinate <<std::endl;
+        std::cout << boxesOnScreen.size() << " " << screenToSceneCoordinate <<
+                     std::endl;
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
@@ -346,10 +366,11 @@ void mapView::drawSingleBox(r2d2::Box box, r2d2::BoxInfo info){
 }
 
 void mapView::recenterMap(){
-        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER,
-                                                    0*r2d2::Length::CENTIMETER)));
+        centerOn(scene->box_coordinate_2_qpoint(
+                     r2d2::Coordinate(
+                         0*r2d2::Length::CENTIMETER,
+                         0*r2d2::Length::CENTIMETER,
+                         0*r2d2::Length::CENTIMETER)));
     }
 
 void mapView::mouseReleaseEvent(QMouseEvent* event){

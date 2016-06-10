@@ -24,14 +24,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
-    //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
+    //TODO: check if we need both eventfilters
+    //      (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
 
-    ui->graphicsView->scene->addOriginOffset(ui->graphicsView->width(), ui->graphicsView->height());
+    ui->graphicsView->scene->addOriginOffset(ui->graphicsView->width(),
+                                             ui->graphicsView->height());
     ui->graphicsView->recenterMap();
 
-    connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+    connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this,
+            SLOT(selectionChanged()));
 }
 
 MainWindow::~MainWindow()
@@ -91,19 +94,22 @@ void MainWindow::on_actionLoad_triggered()
 void MainWindow::on_zoomInButton_clicked()
 {
     ui->graphicsView->increaseZoom();
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
+    ui->zoomResetButton->setText(
+                QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
     ui->graphicsView->decreaseZoom();//TODO: magic value
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
+    ui->zoomResetButton->setText(
+                QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomResetButton_clicked()
 {
     ui->graphicsView->resetScale();
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
+    ui->zoomResetButton->setText(
+                QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_actionPan_toggled(bool activatePan)
@@ -125,9 +131,11 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
         ui->actionPan->setChecked(false);
         ui->graphicsView->setSelectable(true);
         ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-        ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemBoundingRect);
+        ui->graphicsView->setRubberBandSelectionMode(
+                    Qt::IntersectsItemBoundingRect);
         //ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
-        //std::cout << ui->graphicsView->scene->selectedItems().size() << std::endl;
+        //std::cout << ui->graphicsView->scene->selectedItems().size()
+        //<< std::endl;
     }
     else{
         ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
@@ -142,16 +150,24 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
     switch(event->type()){
         case QEvent::GraphicsSceneMouseMove:
             {
-                QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-                r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
-                ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
-                ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
+                QGraphicsSceneMouseEvent * gsme = static_cast<
+                        QGraphicsSceneMouseEvent*>(event);
+                r2d2::Coordinate mouse_pos_in_map =
+                        ui->graphicsView->scene->
+                        qpoint_2_box_coordinate(gsme->scenePos());
+                ui->xposLabel->setText(
+                            QString::number(
+                                mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
+                ui->yposLabel->setText(
+                            QString::number(
+                                mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
 
                 // selectionchanged is only fired when over selectable items,
                 // to keep updating selection data whe need to manualy trigger
                 // it when outside the drawn items (unkown area).
                 if((gsme->buttons() == Qt::MouseButton::RightButton) ){
-                    if(ui->graphicsView->dragMode() == QGraphicsView::RubberBandDrag){
+                    if(ui->graphicsView->dragMode() ==
+                            QGraphicsView::RubberBandDrag){
                         selectionChanged();
                     }
                 }
@@ -161,14 +177,17 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
         case QEvent::Wheel:
             {
-                ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale()) + " %");
+                ui->zoomResetButton->setText(
+                            QString::number(
+                                ui->graphicsView->getScale()) + " %");
                 return false;
                 break;
             }
         default:
             #ifdef debug
             //Debug cout for filter events
-            std::cout << "mapview event filter event type " << event->type() << std::endl;
+            std::cout << "mapview event filter event type " <<
+                         event->type() << std::endl;
             fflush(stdout);
             #endif
             break;
@@ -192,7 +211,10 @@ void MainWindow::on_placeTagButton_clicked()
 {
     int x = ui->xposTag->value();
     int y = ui->yposTag->value();
-    r2d2::Coordinate pos(x*r2d2::Length::CENTIMETER,y*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER);
+    r2d2::Coordinate pos(
+                x*r2d2::Length::CENTIMETER,
+                y*r2d2::Length::CENTIMETER,
+                0*r2d2::Length::CENTIMETER);
     QString tag(ui->tagName->text());
     ui->graphicsView->scene->setTag(pos, tag);
 }
@@ -220,7 +242,9 @@ void MainWindow::on_actionSave_triggered()
     edited = false;
 }
 
-void MainWindow::setTitleState(bool fileLoaded, bool fileEdited, bool fileSaved){
+void MainWindow::setTitleState(bool fileLoaded,
+                               bool fileEdited,
+                               bool fileSaved){
     std::string name = "R2D2 Map Editor";
     updateFileData();
     if(fileLoaded){
@@ -237,19 +261,22 @@ void MainWindow::setTitleState(bool fileLoaded, bool fileEdited, bool fileSaved)
 void MainWindow::on_rotateLeftButton_clicked()
 {
     ui->graphicsView->decreaseRotation();
-    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+    ui->resetRotationButton->setText(
+                QString::number(ui->graphicsView->getRotation()));
 }
 
 void MainWindow::on_rotateRightButton_clicked()
 {
     ui->graphicsView->increaseRotation();
-    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+    ui->resetRotationButton->setText(
+                QString::number(ui->graphicsView->getRotation()));
 }
 
 void MainWindow::on_resetRotationButton_clicked()
 {
     ui->graphicsView->resetRotation();
-    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+    ui->resetRotationButton->setText(
+                QString::number(ui->graphicsView->getRotation()));
 }
 
 void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
@@ -263,7 +290,8 @@ void MainWindow::on_goNavigate_clicked()
                 ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
                 ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
                 0*r2d2::Length::CENTIMETER);
-    ui->graphicsView->centerOn(ui->graphicsView->scene->box_coordinate_2_qpoint(pos));
+    ui->graphicsView->centerOn(
+                ui->graphicsView->scene->box_coordinate_2_qpoint(pos));
     ui->graphicsView->set_z_top(ui->input_z_bot->text().toFloat());
     ui->graphicsView->set_z_bottom(ui->input_z_top->text().toFloat());
 
@@ -282,7 +310,8 @@ void MainWindow::on_actionDebug_triggered()
    testrect.bottom() << " " <<
    testrect.top() << std::endl;
 
-   r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+   r2d2::Box testbox = ui->graphicsView->scene->
+           qrect_2_box_coordinate(testrect);
 
    std::cout << "testbox: " <<
    testbox.get_bottom_left().get_x() << " " <<

@@ -96,7 +96,8 @@ public:
 
     //! \fn     void viewScene::addOriginOffset()
     //!
-    //! \brief  add origin offset to the scene and replaces all objects in the scene
+    //! \brief  add origin offset to the scene and replaces all objects
+    //!         in the scene
     //!
     //! \param x added offset in centimeters
     //! \param y added offset in centimeters
@@ -112,7 +113,8 @@ public:
 
     //! \fn     void viewScene::drawLine()
     //!
-    //! \brief  Draws a line from position x1,y1 to position x2,y2 on the scene.
+    //! \brief  Draws a line from position x1,y1 to position x2,y2 on
+    //!         the scene.
     //!
     //! \param x1
     //! \param y1
@@ -180,7 +182,8 @@ public:
     //! \brief translates an QPoint to an map coordinate
     //!
     //! \param point must be an scene QPointF
-    //! \param z because an adt coord is 3D and an QPoint is 2D you must declare a value for Z
+    //! \param z because an adt coord is 3D and an QPoint is 2D you must
+    //!         declare a value for Z
     //!
     //! \return map coordinate
     r2d2::Coordinate qpoint_2_box_coordinate(QPointF point, double z = 0);
@@ -190,11 +193,14 @@ public:
     //! \brief translates an QRect to an map Box
     //!
     //! \param rect must be an scene QRectF
-    //! \param min_z because an adt box is 3D and an QRectF is 2D you must declare a value for Z
-    //! \param max_z because an adt box is 3D and an QRectF is 2D you must declare a value for Z
+    //! \param min_z because an adt box is 3D and an QRectF is 2D you must
+    //!         declare a value for Z
+    //! \param max_z because an adt box is 3D and an QRectF is 2D you must
+    //!         declare a value for Z
     //!
     //! \return map box
-    r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0, double max_z = 1);
+    r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0,
+                                     double max_z = 1);
 
 };
 

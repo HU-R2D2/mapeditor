@@ -325,7 +325,8 @@ protected:
     //! \brief  receives events and translates the scrollwheel movement
     //!         in qt known as the scrollbar events to zooming with
     //!         the increase and decrease zoom functions
-    //!         * return true if you want to stop the event from going to other objects
+    //!         * return true if you want to stop the event from going
+    //!         to other objects
     //!         * return false if you you do not want to kill the event.
     //!         * event filter order parent->child->child'sChild->etc...
     //!

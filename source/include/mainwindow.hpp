@@ -82,7 +82,8 @@ public:
     //! \fn setTitleState();
     //!
     //! \brief set window title with the state of the map file
-    void setTitleState(bool fileLoaded = false, bool fileEdited = false, bool fileSaved = false);
+    void setTitleState(bool fileLoaded = false, bool fileEdited = false,
+                       bool fileSaved = false);
 protected:
     //! Catches all events and returns true when a event is caught.
     bool eventFilter(QObject *object, QEvent *event);
@@ -141,7 +142,8 @@ private slots:
     //! \fn    on_actionSave_triggered();
     //!
     //! \brief receiver for ui signal button clicked save
-    //!        calls mapinterface save function to save the current map of mapView
+    //!        calls mapinterface save function to save the current map
+    //!        of mapView
     void on_actionSave_triggered();
 
     //! \fn    on_zoomResetButton_clicked();
