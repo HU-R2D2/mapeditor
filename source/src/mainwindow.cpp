@@ -144,9 +144,7 @@ void MainWindow::on_Set_clicked()
 
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
-    ui->graphicsView->drawMap();
 }
-
 void MainWindow::on_placeTagButton_clicked()
 {
     int x = ui->xposTag->value();
@@ -250,5 +248,5 @@ void MainWindow::on_Delete_pressed()
 {
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
-    ui->graphicsView->drawMap();
+    //ui->graphicsView->drawMap();
 }

@@ -66,12 +66,14 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     QRectF tempRect = box_tile_2_qrect(box);
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setBrush(* new QBrush(color));
-    block->setPen(Qt::NoPen);
+    //block->setPen(Qt::NoPen);
     block->setRect(0,0,tempRect.width(),tempRect.height());
     block->setPos(tempRect.x(),tempRect.y());
     block->setVisible(true);
     addItem(block);
     }
+
+
 
 void viewScene::clear(){
     QList<QGraphicsItem *> list = items();

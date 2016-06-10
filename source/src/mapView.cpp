@@ -178,6 +178,8 @@ bool mapView::event(QEvent *event)
                             }
                     break;}
 
+
+
                 default:
             break;
             }
@@ -239,7 +241,7 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
 
     switch(event->type()){
 
-       case QEvent::GraphicsSceneDragEnter:{
+       case QEvent::GraphicsSceneMove:{
          std::cout << "MOVED THE SCENE";
          break;
 
@@ -291,28 +293,42 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
 
 void mapView::drawMap(){
         scene->clear();
-        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
-            scene->qrect_2_box_coordinate(sceneRect()));
+        QPointF topLeft(mapToScene(QPoint(0,height())));
+        QPointF bottemRight(mapToScene(QPoint(width(),0)));
 
+        std::cout << "debug info: " << scene->qrect_2_box_coordinate(QRectF(topLeft,bottemRight)) << std::endl;
 
+        r2d2::Box screenToSceneCoordinate(scene->qrect_2_box_coordinate(QRectF(topLeft, bottemRight)));
+
+        //This renders only what is in the view after scrolling
+        std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(screenToSceneCoordinate);
+
+        //This renders everything that is the scene (very laggy when using a map with lots of obstacles)
+        //std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(map->get_map_bounding_box());
+
+        std::cout << boxesOnScreen.size() << " " << screenToSceneCoordinate <<std::endl;
 
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
-            const r2d2::Coordinate bottemLeft{
-                                   pair.first.get_bottom_left().get_x(),
-                                   pair.first.get_bottom_left().get_y(),
-                                   r2d2::Length::CENTIMETER * z_bottom};
-            const r2d2::Coordinate topRight{
-                                   pair.first.get_top_right().get_x(),
-                                   pair.first.get_top_right().get_y(),
-                                   r2d2::Length::CENTIMETER * z_top};
-
-            r2d2::Box tempbox(bottemLeft,topRight);
-            scene->drawTile(tempbox, tileColors[getTileType(pair.second)]);
+            drawSingleBox(pair.first, pair.second);
         }
         scene->drawAxes();
 
     }
+
+void mapView::drawSingleBox(r2d2::Box box, r2d2::BoxInfo info){
+    const r2d2::Coordinate bottemLeft{
+                          box.get_bottom_left().get_x() ,
+                           box.get_bottom_left().get_y() ,
+                            r2d2::Length::CENTIMETER * 0};
+    const r2d2::Coordinate topRight{
+                           box.get_top_right().get_x() ,
+                           box.get_top_right().get_y() ,
+                           r2d2::Length::CENTIMETER * 0};
+
+    r2d2::Box tempbox(bottemLeft,topRight);
+    scene->drawTile(tempbox, tileColors[getTileType(info)]);
+}
 
 void mapView::recenterMap(){
         resetScale();
@@ -322,6 +338,12 @@ void mapView::recenterMap(){
                                                     0*r2d2::Length::CENTIMETER,
                                                     0*r2d2::Length::CENTIMETER)));
     }
+
+void mapView::mouseReleaseEvent(QMouseEvent* event){
+    drawMap();
+    QGraphicsView::mouseReleaseEvent(event);
+}
+
 
 void mapView::emptyMap(){
     map = new r2d2::ArrayBoxMap();

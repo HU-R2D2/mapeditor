@@ -65,6 +65,7 @@
 #include "Coordinate.hpp"
 #include "Translation.hpp"
 #include "Length.hpp"
+#include "../../../map/source/include/MapInterface.hpp"
 
 class viewScene : public QGraphicsScene
     {
@@ -145,6 +146,7 @@ public:
     //! \param box the map coordinate where the tile will be drawn
     //! \param color
     void drawTile(r2d2::Box box, QColor color);
+
 
     //! \fn     bool viewScene::isTile()
     //!

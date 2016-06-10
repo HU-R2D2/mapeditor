@@ -214,6 +214,14 @@ public:
     //! \brief   (re)draw all the objects the map
     void drawMap();
 
+    //! \fn    void mapView::drawSingleTile()
+    //!
+    //! \brief draws a box on the scene pos with the given color
+    //!
+    //! \param box the map coordinate where the tile will be drawn
+    //! \param color
+    void drawSingleBox(r2d2::Box box, r2d2::BoxInfo info);
+
     //! \fn      mapView::emptyMap()
     //!
     //! \brief   replace the current map with a new empty one
@@ -223,6 +231,14 @@ public:
     //!
     //! \brief   recenter the map and reset the scale
     void recenterMap();
+
+
+    //! \fn     void mapView::mouseReleaseEvent()
+    //!
+    //! \brief  used to define what should happen when a mouse button gets released
+    //!
+    //! \param event the event that occured
+    void mouseReleaseEvent(QMouseEvent* event);
 
     //! \fn     TileType mapEditor::getTileType()
     //!
@@ -299,7 +315,7 @@ protected:
     qreal scaleSize = (maxScale / 2) - minScale;
 
     //! z dimension variables
-    int z_bottom = 0;
+    int z_bottom = -1;
     int z_top = 1;
 
     //! list of selected boxes
