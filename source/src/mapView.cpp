@@ -143,8 +143,8 @@ void mapView::deselectTiles(){
 void mapView::updateSelection(){
     QRectF newBoxArea = scene->selectionArea().boundingRect();
     r2d2::Box box(scene->qpoint_2_box_coordinate(
-                      newBoxArea.bottomLeft()),
-                  scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
+                      newBoxArea.bottomLeft(), z_bottom),
+                  scene->qpoint_2_box_coordinate(newBoxArea.topRight(), z_top));
     selectedBox = box;
     drawMap();
 
@@ -152,7 +152,7 @@ void mapView::updateSelection(){
 
 selectionData mapView::getSelectionData(){
     QRectF selection = scene->selectionArea().boundingRect();
-    r2d2::Box mapBox(scene->qrect_2_box_coordinate(selection));
+    r2d2::Box mapBox(scene->qrect_2_box_coordinate(selection, z_bottom, z_top));
     r2d2::BoxInfo bi = map->get_box_info(mapBox);
     switch(getTileType(bi)){
         case MapTypes::TileType::EMPTY:
@@ -171,10 +171,10 @@ selectionData mapView::getSelectionData(){
 
     r2d2::Coordinate topLeft(scene->
                              qpoint_2_box_coordinate(
-                                 selection.topLeft(),0.0));
+                                 selection.topLeft(),z_bottom));
     r2d2::Coordinate bottomRight(scene->
                                  qpoint_2_box_coordinate(
-                                     selection.bottomRight(),1.0));
+                                     selection.bottomRight(),z_top));
 
     selData.xtop = topLeft.get_x()/r2d2::Length::CENTIMETER;
     selData.ytop = topLeft.get_y()/r2d2::Length::CENTIMETER;
@@ -312,7 +312,8 @@ void mapView::drawMap(){
 
         r2d2::Box screenToSceneCoordinate(scene->
                                           qrect_2_box_coordinate(
-                                              QRectF(topLeft, bottemRight)));
+                                              QRectF(topLeft, bottemRight),
+                                              z_bottom, z_top));
 
         //This renders only what is in the view after scrolling
         std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen =

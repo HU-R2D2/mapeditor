@@ -294,6 +294,8 @@ void MainWindow::on_goNavigate_clicked()
     ui->graphicsView->set_z_top(ui->input_z_bot->text().toFloat());
     ui->graphicsView->set_z_bottom(ui->input_z_top->text().toFloat());
 
+    ui->graphicsView->drawMap();
+
 }
 
 void MainWindow::on_actionDebug_triggered()
