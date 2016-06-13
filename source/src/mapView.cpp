@@ -11,7 +11,7 @@
 #include <QKeyEvent>
 #include <QtGui>
 #include <QMutex>
-#include <Qrect>
+#include <QRect>
 
 QMutex EventRecursion;
 
