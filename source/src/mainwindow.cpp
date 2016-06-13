@@ -47,7 +47,7 @@ void MainWindow::on_actionRoboRescue_wiki_triggered()
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QString() ,tr("map (*.map)"));
     fileName_std = fileName.toUtf8().constData();
     ui->graphicsView->saveMapFile(fileName_std);
     edited = false;
@@ -75,6 +75,7 @@ void MainWindow::on_actionLoad_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("MAP-Files (*.map)");
     QStringList fileNames;
     if (dialog.exec()){
         fileNames = dialog.selectedFiles();
