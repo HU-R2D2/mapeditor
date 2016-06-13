@@ -1,4 +1,4 @@
-#include "../include/viewScene.hpp"
+#include "viewScene.hpp"
 
 viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
     {
@@ -71,7 +71,7 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     block->setPos(tempRect.x(),tempRect.y());
     block->setVisible(true);
     addItem(block);
-    }
+}
 
 void viewScene::clear(){
     QList<QGraphicsItem *> list = items();
@@ -82,7 +82,7 @@ void viewScene::clear(){
 }
 
 bool viewScene::isTile(QGraphicsItem * item){
-    if(!(item == xAxis || item == yAxis)){
+    if(!(item == xAxis || item == yAxis || item == tmpSelection)){
         return true;
     }else{
         return false;
@@ -100,4 +100,20 @@ void viewScene::deleteSelectedItems(){
 void viewScene::setTag(r2d2::Coordinate pos, QString value){
     QGraphicsTextItem *item = addText(value);
     item->setPos(box_coordinate_2_qpoint(pos));
+}
+
+void viewScene::deleteSelection(){
+    removeItem(tmpSelection);
+}
+
+void viewScene::drawSelection(){
+    QRectF selRect = selectionArea().boundingRect();
+    std::cout << selRect.x() << " x " << selRect.y() << std::endl;
+
+    tmpSelection->setBrush(Qt::blue);
+    tmpSelection->setPen(Qt::NoPen);
+    tmpSelection->setRect(selRect);
+    tmpSelection->setOpacity(0.3);
+    tmpSelection->setVisible(true);
+    addItem(tmpSelection);
 }

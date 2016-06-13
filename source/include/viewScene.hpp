@@ -73,11 +73,14 @@ class viewScene : public QGraphicsScene
 private:
 
     QPoint originOffset{0,0};
+
+    // can't be empty (missclick guard)
+    QGraphicsRectItem * tmpSelection = new QGraphicsRectItem(0, 0, 10, 10);
+
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
     QGraphicsLineItem * yAxis = addLine(0,0,0,0);
 
 public:
-
     //! \fn     explicit viewScene::viewScene()
     //!
     //! \brief  constructor for viewScene, creates new viewScene
@@ -127,6 +130,10 @@ public:
     //! \param pos the top left corner of the test (map coordinates)
     //! \param value the string that will be shown
     void setTag(r2d2::Coordinate pos, QString value);
+
+    void deleteSelection();
+
+    void drawSelection();
 
     //! \fn     void viewScene::deleteSelectedItems()
     //!
