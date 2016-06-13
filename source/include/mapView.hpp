@@ -361,8 +361,8 @@ protected:
     qreal scaleSize = (maxZoom / 2) - minZoom;
 
     //! z dimension variables
-    int z_bottom = -1;
-    int z_top = 1;
+    double z_bottom = -1;
+    double z_top = 1;
 
     selectionData selData;
     //! list of selected boxes
