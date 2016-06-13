@@ -27,7 +27,8 @@ SOURCES += source/src/main.cpp \
     ../adt/source/src/Box.cpp \
     ../adt/source/src/Coordinate.cpp \
     ../map/source/src/MapInterface.cpp \
-    ../map/source/src/ArrayBoxMap.cpp
+    ../map/source/src/ArrayBoxMap.cpp \
+    ../map/source/src/BoxMap.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \

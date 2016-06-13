@@ -96,7 +96,7 @@ void MainWindow::on_zoomInButton_clicked()
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    ui->graphicsView->decreaseZoom();//TODO: magic value
+    ui->graphicsView->decreaseZoom();
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
@@ -144,7 +144,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
                 r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
-                ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
+                ui->xposLabel->setText(
+                            QString::number(
+                                mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
                 ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
 
                 // selectionchanged is only fired when over selectable items,

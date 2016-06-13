@@ -15,7 +15,6 @@
 
 QMutex EventRecursion;
 
-
 mapView::mapView(QWidget *parent):
     QGraphicsView(parent),
     windowWidth(1000),
@@ -34,7 +33,8 @@ mapView::mapView(QWidget *parent):
     p.setColor(QPalette::Highlight, Qt::red);
 
     scene->setPalette(p);
-    std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
+    std::cout << "new Viewer with size: " << windowWidth <<
+                 " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
     show();
@@ -45,7 +45,6 @@ mapView::mapView(QWidget *parent):
     verticalScrollBar()->installEventFilter(this);
     horizontalScrollBar()->installEventFilter(this);
     setMouseTracking(true);
-
 
     recenterMap();
 }
@@ -143,15 +142,22 @@ void mapView::deselectTiles(){
 
 void mapView::updateSelection(){
     QRectF newBoxArea = scene->selectionArea().boundingRect();
-    r2d2::Box box(scene->qpoint_2_box_coordinate(newBoxArea.bottomLeft()), scene->qpoint_2_box_coordinate(newBoxArea.topRight()));
+    r2d2::Box box(scene->qpoint_2_box_coordinate(
+                      newBoxArea.bottomLeft()),
+                  scene->qpoint_2_box_coordinate(
+                      newBoxArea.topRight()));
     selectedBox = box;
     drawMap();
-
 }
 
 selectionData mapView::getSelectionData(){
     QRectF selection = scene->selectionArea().boundingRect();
-    r2d2::Box mapBox(scene->qrect_2_box_coordinate(selection));
+    r2d2::Box mapBox(
+                scene->qrect_2_box_coordinate(
+                    selection,
+                    z_bottom,
+                    z_top)
+                );
     r2d2::BoxInfo bi = map->get_box_info(mapBox);
     switch(getTileType(bi)){
         case MapTypes::TileType::EMPTY:
@@ -168,8 +174,8 @@ selectionData mapView::getSelectionData(){
             break;
     }
 
-    r2d2::Coordinate topLeft(scene->qpoint_2_box_coordinate(selection.topLeft(),0.0));
-    r2d2::Coordinate bottomRight(scene->qpoint_2_box_coordinate(selection.bottomRight(),1.0));
+    r2d2::Coordinate topLeft(scene->qpoint_2_box_coordinate(selection.topLeft(),z_bottom));
+    r2d2::Coordinate bottomRight(scene->qpoint_2_box_coordinate(selection.bottomRight(),z_top));
 
     selData.xtop = topLeft.get_x()/r2d2::Length::CENTIMETER;
     selData.ytop = topLeft.get_y()/r2d2::Length::CENTIMETER;
@@ -260,7 +266,7 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
     switch(event->type()){
 
        case QEvent::GraphicsSceneDragEnter:{
-         std::cout << "MOVED THE SCENE";
+         std::cout << "MOVED THE SCENE" << std::endl;
          break;
 
        }
@@ -277,13 +283,17 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
                }
                return true;
                }
-           else if(object == horizontalScrollBar()){//catch horizontal scroll
+           else if(object == horizontalScrollBar()){
                return true;}
            break;
-       case QEvent::GraphicsSceneMouseMove:
+       case QEvent::GraphicsSceneMouseRelease:
            {
-           return true;
-           break;
+               QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
+               if(dragMode() == QGraphicsView::RubberBandDrag && (gsme->button() == Qt::MouseButton::RightButton)){
+                   scene->drawSelection();
+               }
+               return true;
+               break;
            }
         default:
             break;
@@ -308,9 +318,6 @@ void mapView::drawMap(){
         scene->clear();
         std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> boxesOnScreen = map->get_intersecting(
             scene->qrect_2_box_coordinate(sceneRect()));
-
-
-
 
         for(std::pair<r2d2::Box, r2d2::BoxInfo> pair: boxesOnScreen){
             const r2d2::Coordinate bottemLeft{
@@ -339,6 +346,7 @@ void mapView::recenterMap(){
 void mapView::emptyMap(){
     map = new r2d2::ArrayBoxMap();
 }
+
 
 int mapView::getMaxZoom(){
     return floor(maxZoom);
