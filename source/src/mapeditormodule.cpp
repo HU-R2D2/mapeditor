@@ -2,8 +2,13 @@
 
 QWidget *mapeditorModule::getInfoTab() const
 {
-return infoTab;
-}
+        return infoTab;
+    }
+
+mapeditorModule::mapeditorModule(mapEditor *mapEditor)
+    {
+
+    }
 
 QWidget *mapeditorModule::getEditTab() const
     {

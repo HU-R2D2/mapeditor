@@ -29,7 +29,10 @@ SOURCES +=    source/src/mainwindow.cpp \
     ../map/source/src/MapInterface.cpp \
     ../map/source/src/ArrayBoxMap.cpp \
     ../map/source/src/BoxMap.cpp \
-    source/src/main.cpp
+    source/src/main.cpp \
+    source/exampleModule/exampleInfoTab.cpp \
+    source/exampleModule/exampleEditTab.cpp \
+    source/exampleModule/exampleModule.cpp
 
 HEADERS  += source/include/mainwindow.hpp \
     source/include/mapEditor.hpp \
@@ -42,13 +45,19 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/MapInterface.hpp \
     ../map/source/include/BoxMap.hpp \
     ../map/source/include/ArrayBoxMap.hpp \
-    source/include/mapeditormodule.hpp
+    source/include/mapeditormodule.hpp \
+    source/exampleModule/exampleInfoTab.hpp \
+    source/exampleModule/exampleEditTab.hpp \
+    source/exampleModule/exampleModule.hpp
 
 INCLUDEPATH += ../adt/source/include/
 INCLUDEPATH += ../map/source/include/
 INCLUDEPATH += source/include/
+INCLUDEPATH += source/exampleModule/
 
-FORMS    += source/mainwindow.ui
+FORMS    += source/mainwindow.ui \
+    source/exampleModule/exampleInfoTab.ui \
+    source/exampleModule/exampleEditTab.ui
 
 DISTFILES += \
     ../map/save_and_load_test.json

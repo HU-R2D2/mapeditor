@@ -13,8 +13,11 @@ private:
     //info tab
     QWidget * infoTab;
 
+    mapEditor * mapEditorPointer;
+
 
 public:
+
     QWidget *getEditTab() const;
     QWidget *getInfoTab() const;
 
