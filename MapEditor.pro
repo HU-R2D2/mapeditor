@@ -21,6 +21,7 @@ SOURCES +=    source/src/mainwindow.cpp \
     source/src/mapEditor.cpp \
     source/src/mapView.cpp \
     source/src/viewScene.cpp \
+    source/src/mapeditormodule.cpp \
     ../adt/source/src/Length.cpp \
     ../adt/source/src/Translation.cpp \
     ../adt/source/src/Box.cpp \
@@ -40,7 +41,8 @@ HEADERS  += source/include/mainwindow.hpp \
     ../adt/source/include/Coordinate.hpp \
     ../map/source/include/MapInterface.hpp \
     ../map/source/include/BoxMap.hpp \
-    ../map/source/include/ArrayBoxMap.hpp
+    ../map/source/include/ArrayBoxMap.hpp \
+    source/include/mapeditormodule.hpp
 
 INCLUDEPATH += ../adt/source/include/
 INCLUDEPATH += ../map/source/include/
