@@ -195,18 +195,22 @@ bool mapView::event(QEvent *event)
                         if(ke->key() == Qt::Key_Down){
                                 int val = verticalScrollBar()->value();
                                 verticalScrollBar()->setValue(val+scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Up){
                                 int val = verticalScrollBar()->value();
                                 verticalScrollBar()->setValue(val-scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Right){
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(val+scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Left){
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(val-scrollStepSize);
+                                drawMap();
                             }
                     break;}
 
