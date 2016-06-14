@@ -315,7 +315,6 @@ private:
     //! scene dimensions
     int windowWidth;
     int windowHeight;
-
 protected:
     //! loaded map
     r2d2::BoxMap * map = new r2d2::ArrayBoxMap;
@@ -367,6 +366,8 @@ protected:
     selectionData selData;
     //! list of selected boxes
     r2d2::Box selectedBox;
-    };
+
+    QGraphicsRectItem * tmpSelection;
+};
 
 #endif // MAPVIEW_HPP

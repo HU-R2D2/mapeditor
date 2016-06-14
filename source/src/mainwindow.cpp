@@ -100,7 +100,7 @@ void MainWindow::on_zoomInButton_clicked()
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    ui->graphicsView->decreaseZoom();//TODO: magic value
+    ui->graphicsView->decreaseZoom();
     ui->zoomResetButton->setText(
                 QString::number(ui->graphicsView->getScale())+ " %");
 }
@@ -152,10 +152,12 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 r2d2::Coordinate mouse_pos_in_map =
                         ui->graphicsView->scene->
                         qpoint_2_box_coordinate(gsme->scenePos());
+
                 ui->xposLabel->setText(
                             QString::number(
                                 mouse_pos_in_map.get_x()/
                                 r2d2::Length::CENTIMETER));
+
                 ui->yposLabel->setText(
                             QString::number(
                                 mouse_pos_in_map.get_y()/
@@ -183,12 +185,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 break;
             }
         default:
-            #ifdef debug
-            //Debug cout for filter events
-            std::cout << "mapview event filter event type " <<
-                         event->type() << std::endl;
-            fflush(stdout);
-            #endif
+            // cout on event-type() can be added here to display extra events
             break;
         }
     return false;
@@ -365,4 +362,10 @@ void MainWindow::selectionChanged(){
     ui->bd_topl->setText(double_coord_2_QString(data.xtop, data.ytop));
     ui->bd_botr->setText(double_coord_2_QString(data.xbottom, data.ybottom));
     ui->bd_dimension->setText(double_coord_2_QString(data.width, data.height));
+}
+
+void MainWindow::on_actionOutlinedBoxes_2_toggled(bool arg1)
+{
+    ui->graphicsView->scene->setOutline(arg1);
+    ui->graphicsView->drawMap();
 }

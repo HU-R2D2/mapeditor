@@ -30,7 +30,6 @@ SOURCES +=    source/src/mainwindow.cpp \
     ../map/source/src/BoxMap.cpp \
     source/src/main.cpp
 
-
 HEADERS  += source/include/mainwindow.hpp \
     source/include/mapEditor.hpp \
     source/include/mapView.hpp \

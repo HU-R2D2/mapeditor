@@ -212,6 +212,14 @@ private slots:
     //!        calls the mapeditor delete function to remove boxes
     void on_Delete_pressed();
 
+    //! \fn     void onActionOutlinedBoxes(bool arg1)
+    //!
+    //! \brief receiver for ui signal button clicked outlinedBoxes
+    //!        calls view and sets teh boxoutline to the new state
+    //!
+    //! \param outlined state
+    void on_actionOutlinedBoxes_2_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
 

@@ -28,7 +28,6 @@ void mapEditor::editTile(QString type){
     //store
     map->set_box_info(selectedBox, info);
     drawSingleBox(selectedBox, info);
-
 }
 
 

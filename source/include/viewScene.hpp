@@ -73,13 +73,17 @@ class viewScene : public QGraphicsScene
     Q_OBJECT
 
 private:
+    bool outlined = false;
 
     QPoint originOffset{0,0};
+
+    // can't be empty (missclick guard)
+    QGraphicsRectItem * tmpSelection = new QGraphicsRectItem(0, 0, 10, 10);
+
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
     QGraphicsLineItem * yAxis = addLine(0,0,0,0);
 
 public:
-
     //! \fn     explicit viewScene::viewScene()
     //!
     //! \brief  constructor for viewScene, creates new viewScene
@@ -131,6 +135,16 @@ public:
     //! \param pos the top left corner of the test (map coordinates)
     //! \param value the string that will be shown
     void setTag(r2d2::Coordinate pos, QString value);
+
+    //! \fn     void viewScene::deleteSelection()
+    //!
+    //! \brief  deletes selection area overlay rectItem
+    void deleteSelection();
+
+    //! \fn     void viewScene::drawSelection()
+    //!
+    //! \brief  draw selection area overlay with a temperary rectItem
+    void drawSelection();
 
     //! \fn     void viewScene::deleteSelectedItems()
     //!
@@ -202,6 +216,13 @@ public:
     //! \return map box
     r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0,
                                      double max_z = 1);
+
+    //! \fn     void viewScene::drawSelection()
+    //!
+    //! \brief  turn on or off the outlined boxes option
+    //!
+    //! \param outline bool, boolean value set outline on of
+    void setOutline(bool state);
 
 };
 

@@ -76,13 +76,15 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     QRectF tempRect = box_tile_2_qrect(box);
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setBrush(* new QBrush(color));
-    //Enable line below to NOT box borders
-    //block->setPen(Qt::NoPen);
+    //check current draw outline state
+    if(!outlined){
+        block->setPen(Qt::NoPen);
+    }
     block->setRect(0,0,tempRect.width(),tempRect.height());
     block->setPos(tempRect.x(),tempRect.y());
     block->setVisible(true);
     addItem(block);
-    }
+}
 
 
 
@@ -95,7 +97,7 @@ void viewScene::clear(){
 }
 
 bool viewScene::isTile(QGraphicsItem * item){
-    if(!(item == xAxis || item == yAxis)){
+    if(!(item == xAxis || item == yAxis || item == tmpSelection)){
         return true;
     }else{
         return false;
@@ -113,4 +115,24 @@ void viewScene::deleteSelectedItems(){
 void viewScene::setTag(r2d2::Coordinate pos, QString value){
     QGraphicsTextItem *item = addText(value);
     item->setPos(box_coordinate_2_qpoint(pos));
+}
+
+void viewScene::deleteSelection(){
+    removeItem(tmpSelection);
+}
+
+void viewScene::drawSelection(){
+    QRectF selRect = selectionArea().boundingRect();
+    std::cout << selRect.x() << " x " << selRect.y() << std::endl;
+
+    tmpSelection->setBrush(Qt::blue);
+    tmpSelection->setPen(Qt::NoPen);
+    tmpSelection->setRect(selRect);
+    tmpSelection->setOpacity(0.3);
+    tmpSelection->setVisible(true);
+    addItem(tmpSelection);
+}
+
+void viewScene::setOutline(bool state){
+    outlined = state;
 }
