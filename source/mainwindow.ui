@@ -283,12 +283,38 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Layers">
      <attribute name="title">
       <string>Layers</string>
      </attribute>
+     <widget class="QLabel" name="Versionlabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>220</y>
+        <width>241</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Adobe Fan Heiti Std B</family>
+        <pointsize>14</pointsize>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Scene Layers will be added in version 2.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Editor">
      <attribute name="title">
@@ -601,7 +627,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="fileData">
      <attribute name="title">
@@ -686,7 +712,7 @@
         <x>10</x>
         <y>10</y>
         <width>251</width>
-        <height>109</height>
+        <height>133</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_3">
@@ -724,6 +750,13 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="bd_topl">
+         <property name="text">
+          <string>-</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="bdl_botr">
          <property name="font">
@@ -734,6 +767,13 @@
          </property>
          <property name="text">
           <string>Bottom (R)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="bd_botr">
+         <property name="text">
+          <string>-</string>
          </property>
         </widget>
        </item>
@@ -750,22 +790,28 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="bd_topl">
-         <property name="text">
-          <string>-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="bd_botr">
-         <property name="text">
-          <string>-</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QLabel" name="bd_dimension">
+         <property name="text">
+          <string>-</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="bdl_zcoord">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Z range</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="bd_zcoord">
          <property name="text">
           <string>-</string>
          </property>

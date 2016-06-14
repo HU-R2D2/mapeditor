@@ -189,6 +189,8 @@ selectionData mapView::getSelectionData(){
     selData.ybottom = bottomRight.get_y()/r2d2::Length::CENTIMETER;
     selData.width = selection.width();
     selData.height = selection.height();
+    selData.ztop = mapBox.get_top_right().get_z()/r2d2::Length::CENTIMETER;
+    selData.zbottom = mapBox.get_bottom_left().get_z()/r2d2::Length::CENTIMETER;
     return selData;
 }
 
