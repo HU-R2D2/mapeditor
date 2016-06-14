@@ -9,8 +9,9 @@
 //!         Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
 //!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 12-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for mainwindow
 //!
 //! This is the header file for mainwindow
@@ -82,7 +83,8 @@ public:
     //! \fn setTitleState();
     //!
     //! \brief set window title with the state of the map file
-    void setTitleState(bool fileLoaded = false, bool fileEdited = false, bool fileSaved = false);
+    void setTitleState(bool fileLoaded = false, bool fileEdited = false,
+                       bool fileSaved = false);
 protected:
     //! Catches all events and returns true when a event is caught.
     bool eventFilter(QObject *object, QEvent *event);
@@ -141,7 +143,8 @@ private slots:
     //! \fn    on_actionSave_triggered();
     //!
     //! \brief receiver for ui signal button clicked save
-    //!        calls mapinterface save function to save the current map of mapView
+    //!        calls mapinterface save function to save the current map
+    //!        of mapView
     void on_actionSave_triggered();
 
     //! \fn    on_zoomResetButton_clicked();
@@ -208,6 +211,14 @@ private slots:
     //! \brief receiver for ui signal button clicked delete
     //!        calls the mapeditor delete function to remove boxes
     void on_Delete_pressed();
+
+    //! \fn     void onActionOutlinedBoxes(bool arg1)
+    //!
+    //! \brief receiver for ui signal button clicked outlinedBoxes
+    //!        calls view and sets teh boxoutline to the new state
+    //!
+    //! \param outlined state
+    void on_actionOutlinedBoxes_2_toggled(bool arg1);
 
 private:
     Ui::MainWindow *ui;

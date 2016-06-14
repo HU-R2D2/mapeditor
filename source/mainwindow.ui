@@ -1208,6 +1208,8 @@
     </property>
     <addaction name="actionPan"/>
     <addaction name="actionSelectMode"/>
+    <addaction name="separator"/>
+    <addaction name="actionOutlinedBoxes_2"/>
    </widget>
    <widget class="QMenu" name="menuDebug">
     <property name="title">
@@ -1287,6 +1289,20 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionOutlinedBoxes_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>OutlinedBoxes</string>
+   </property>
+   <property name="whatsThis">
+    <string>When selected Boxes will have black outlines</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
    </property>
   </action>
  </widget>
