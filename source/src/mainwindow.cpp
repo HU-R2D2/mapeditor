@@ -24,8 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
-    //TODO: check if we need both eventfilters
-    //      (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
 
@@ -50,7 +48,7 @@ void MainWindow::on_actionRoboRescue_wiki_triggered()
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QString() ,tr("map (*.map)"));
     fileName_std = fileName.toUtf8().constData();
     ui->graphicsView->saveMapFile(fileName_std);
     edited = false;
@@ -78,6 +76,7 @@ void MainWindow::on_actionLoad_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("map (*.map)");
     QStringList fileNames;
     if (dialog.exec()){
         fileNames = dialog.selectedFiles();
@@ -362,6 +361,7 @@ void MainWindow::selectionChanged(){
     ui->bd_topl->setText(double_coord_2_QString(data.xtop, data.ytop));
     ui->bd_botr->setText(double_coord_2_QString(data.xbottom, data.ybottom));
     ui->bd_dimension->setText(double_coord_2_QString(data.width, data.height));
+    ui->bd_zcoord->setText(double_coord_2_QString(data.ztop, data.zbottom));
 }
 
 void MainWindow::on_actionOutlinedBoxes_2_toggled(bool arg1)

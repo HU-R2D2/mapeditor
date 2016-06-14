@@ -189,6 +189,8 @@ selectionData mapView::getSelectionData(){
     selData.ybottom = bottomRight.get_y()/r2d2::Length::CENTIMETER;
     selData.width = selection.width();
     selData.height = selection.height();
+    selData.ztop = mapBox.get_top_right().get_z()/r2d2::Length::CENTIMETER;
+    selData.zbottom = mapBox.get_bottom_left().get_z()/r2d2::Length::CENTIMETER;
     return selData;
 }
 
@@ -203,21 +205,25 @@ bool mapView::event(QEvent *event)
                                 int val = verticalScrollBar()->value();
                                 verticalScrollBar()->setValue(
                                             val+scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Up){
                                 int val = verticalScrollBar()->value();
                                 verticalScrollBar()->setValue(
                                             val-scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Right){
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(
                                             val+scrollStepSize);
+                                drawMap();
                             }
                         else if(ke->key() == Qt::Key_Left){
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(
                                             val-scrollStepSize);
+                                drawMap();
                             }
                     break;}
 

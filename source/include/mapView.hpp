@@ -85,6 +85,8 @@ struct selectionData{
     double ybottom;
     double width;
     double height;
+    double ztop;
+    double zbottom;
 };
 
 
