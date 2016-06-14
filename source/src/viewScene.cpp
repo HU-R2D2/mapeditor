@@ -11,7 +11,8 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
        originOffset.setX(xOffset);
        originOffset.setY(yOffset);
        QPoint relativeOffset = originOffset - oldOffset;
-       setSceneRect(0,0,width() + relativeOffset.x(), height() + relativeOffset.y());
+       setSceneRect(0,0,width() + relativeOffset.x(), height() +
+                    relativeOffset.y());
        //loop to relocate all items on the scene
        for( auto item : items() ) {
             item->setPos(item->pos()+relativeOffset);
@@ -36,27 +37,36 @@ void viewScene::addOriginOffset(unsigned int x, unsigned int y)
     }
 
 QPointF viewScene::box_coordinate_2_qpoint(r2d2::Coordinate coordinate){
-        return QPointF((coordinate.get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+        return QPointF((coordinate.get_x()/r2d2::Length::CENTIMETER) +
+                       originOffset.x(),
         ((coordinate.get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y());
     }
 
 QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
         return QRectF(
-                    (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
-                    ((box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
-                    (box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
-                    (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
+                    (box.get_bottom_left().get_x()/
+                     r2d2::Length::CENTIMETER)+originOffset.x(),
+                    ((box.get_bottom_left().get_y()/
+                      r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
+                    (box.get_axis_size().get_x()/
+                     r2d2::Length::CENTIMETER),
+                    (box.get_axis_size().get_y()/
+                     r2d2::Length::CENTIMETER)*-1);
     }
 
 r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point, double z){
         return r2d2::Coordinate(
-                    (point.x() - originOffset.x())*r2d2::Length::CENTIMETER,
-                    ((point.y() - originOffset.y()))*-1*r2d2::Length::CENTIMETER,
+                    (point.x() - originOffset.x())*
+                    r2d2::Length::CENTIMETER,
+                    ((point.y() - originOffset.y()))*-1*
+                    r2d2::Length::CENTIMETER,
                     z*r2d2::Length::CENTIMETER
                     );
     }
 
-r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect,double min_z,double max_z){
+r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect,
+                                            double min_z,
+                                            double max_z){
 
         return r2d2::Box(qpoint_2_box_coordinate(rect.bottomLeft(),min_z),
                          qpoint_2_box_coordinate(rect.topRight(),max_z));
@@ -66,12 +76,17 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     QRectF tempRect = box_tile_2_qrect(box);
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setBrush(* new QBrush(color));
-    block->setPen(Qt::NoPen);
+    //check current draw outline state
+    if(!outlined){
+        block->setPen(Qt::NoPen);
+    }
     block->setRect(0,0,tempRect.width(),tempRect.height());
     block->setPos(tempRect.x(),tempRect.y());
     block->setVisible(true);
     addItem(block);
 }
+
+
 
 void viewScene::clear(){
     QList<QGraphicsItem *> list = items();
@@ -116,4 +131,8 @@ void viewScene::drawSelection(){
     tmpSelection->setOpacity(0.3);
     tmpSelection->setVisible(true);
     addItem(tmpSelection);
+}
+
+void viewScene::setOutline(bool state){
+    outlined = state;
 }

@@ -10,8 +10,9 @@
 //! \author Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
 //!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 12-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for mapView
 //!
 //! This is the header file for mapView
@@ -50,6 +51,7 @@
 
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
+
 #include "MapInterface.hpp"
 #include "BoxMap.hpp"
 #include "ArrayBoxMap.hpp"
@@ -74,7 +76,7 @@ namespace MapTypes{
         UNKNOWN, MIXED, BLOCKED, EMPTY
     };
 }
-
+//All the data that is used for getting a selection in the scene
 struct selectionData{
     QString type;
     double xtop;
@@ -210,6 +212,12 @@ public:
     //!
     //! \param  float value is the desired z top value
     void set_z_top(float value);
+
+    //! \fn     void mapEditor::saveMapFile()
+    //!
+    //! \brief  saves a map in a file with the name of filename
+    //!
+    //! \param  string of path to map for io
     void saveMapFile(std::string filename);
 
     //! viewscene scene on which we draw
@@ -231,6 +239,14 @@ public:
     //! \brief   (re)draw all the objects the map
     void drawMap();
 
+    //! \fn    void mapView::drawSingleTile()
+    //!
+    //! \brief draws a box on the scene pos with the given color
+    //!
+    //! \param box the map coordinate where the tile will be drawn
+    //! \param color
+    void drawSingleBox(r2d2::Box box, r2d2::BoxInfo info);
+
     //! \fn      mapView::emptyMap()
     //!
     //! \brief   replace the current map with a new empty one
@@ -240,6 +256,15 @@ public:
     //!
     //! \brief   recenter the map and reset the scale
     void recenterMap();
+
+
+    //! \fn     void mapView::mouseReleaseEvent()
+    //!
+    //! \brief  used to define what should happen when a mouse button gets
+    //!         released
+    //!
+    //! \param event the event that occured
+    void mouseReleaseEvent(QMouseEvent* event);
 
     //! \fn     TileType mapEditor::getTileType()
     //!
@@ -307,7 +332,8 @@ protected:
     //! \brief  receives events and translates the scrollwheel movement
     //!         in qt known as the scrollbar events to zooming with
     //!         the increase and decrease zoom functions
-    //!         * return true if you want to stop the event from going to other objects
+    //!         * return true if you want to stop the event from going
+    //!         to other objects
     //!         * return false if you you do not want to kill the event.
     //!         * event filter order parent->child->child'sChild->etc...
     //!
@@ -324,15 +350,17 @@ protected:
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
+
     qreal maxZoom  = 1.0f;
     qreal minZoom  = 0.01f;
     qreal zoomSpeed = maxZoom / 100;
+
 
     //! Scalesize default is half of the scale range
     qreal scaleSize = (maxZoom / 2) - minZoom;
 
     //! z dimension variables
-    double z_bottom = 0;
+    double z_bottom = -1;
     double z_top = 1;
 
     selectionData selData;

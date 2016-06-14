@@ -10,8 +10,9 @@
 //! \author Koen de Guijter, 1671103
 //!         Jop van Buuren, 1658718
 //!         Daniel Klomp, 1661521
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 16-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for viewScene
 //!
 //! This is the header file for viewScene
@@ -65,12 +66,14 @@
 #include "Coordinate.hpp"
 #include "Translation.hpp"
 #include "Length.hpp"
+#include "MapInterface.hpp"
 
 class viewScene : public QGraphicsScene
     {
     Q_OBJECT
 
 private:
+    bool outlined = false;
 
     QPoint originOffset{0,0};
 
@@ -98,7 +101,8 @@ public:
 
     //! \fn     void viewScene::addOriginOffset()
     //!
-    //! \brief  add origin offset to the scene and replaces all objects in the scene
+    //! \brief  add origin offset to the scene and replaces all objects
+    //!         in the scene
     //!
     //! \param x added offset in centimeters
     //! \param y added offset in centimeters
@@ -114,7 +118,8 @@ public:
 
     //! \fn     void viewScene::drawLine()
     //!
-    //! \brief  Draws a line from position x1,y1 to position x2,y2 on the scene.
+    //! \brief  Draws a line from position x1,y1 to position x2,y2 on
+    //!         the scene.
     //!
     //! \param x1
     //! \param y1
@@ -131,8 +136,14 @@ public:
     //! \param value the string that will be shown
     void setTag(r2d2::Coordinate pos, QString value);
 
+    //! \fn     void viewScene::deleteSelection()
+    //!
+    //! \brief  deletes selection area overlay rectItem
     void deleteSelection();
 
+    //! \fn     void viewScene::drawSelection()
+    //!
+    //! \brief  draw selection area overlay with a temperary rectItem
     void drawSelection();
 
     //! \fn     void viewScene::deleteSelectedItems()
@@ -152,6 +163,7 @@ public:
     //! \param box the map coordinate where the tile will be drawn
     //! \param color
     void drawTile(r2d2::Box box, QColor color);
+
 
     //! \fn     bool viewScene::isTile()
     //!
@@ -185,7 +197,8 @@ public:
     //! \brief translates an QPoint to an map coordinate
     //!
     //! \param point must be an scene QPointF
-    //! \param z because an adt coord is 3D and an QPoint is 2D you must declare a value for Z
+    //! \param z because an adt coord is 3D and an QPoint is 2D you must
+    //!         declare a value for Z
     //!
     //! \return map coordinate
     r2d2::Coordinate qpoint_2_box_coordinate(QPointF point, double z = 0);
@@ -195,11 +208,21 @@ public:
     //! \brief translates an QRect to an map Box
     //!
     //! \param rect must be an scene QRectF
-    //! \param min_z because an adt box is 3D and an QRectF is 2D you must declare a value for Z
-    //! \param max_z because an adt box is 3D and an QRectF is 2D you must declare a value for Z
+    //! \param min_z because an adt box is 3D and an QRectF is 2D you must
+    //!         declare a value for Z
+    //! \param max_z because an adt box is 3D and an QRectF is 2D you must
+    //!         declare a value for Z
     //!
     //! \return map box
-    r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0, double max_z = 1);
+    r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0,
+                                     double max_z = 1);
+
+    //! \fn     void viewScene::drawSelection()
+    //!
+    //! \brief  turn on or off the outlined boxes option
+    //!
+    //! \param outline bool, boolean value set outline on of
+    void setOutline(bool state);
 
 };
 

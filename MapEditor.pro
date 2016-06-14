@@ -17,8 +17,7 @@ TARGET = MapEditor
 TEMPLATE = app
 
 
-SOURCES += source/src/main.cpp \
-    source/src/mainwindow.cpp \
+SOURCES +=    source/src/mainwindow.cpp \
     source/src/mapEditor.cpp \
     source/src/mapView.cpp \
     source/src/viewScene.cpp \
@@ -28,8 +27,8 @@ SOURCES += source/src/main.cpp \
     ../adt/source/src/Coordinate.cpp \
     ../map/source/src/MapInterface.cpp \
     ../map/source/src/ArrayBoxMap.cpp \
-    ../map/source/src/BoxMap.cpp
-
+    ../map/source/src/BoxMap.cpp \
+    source/src/main.cpp
 
 HEADERS  += source/include/mainwindow.hpp \
     source/include/mapEditor.hpp \

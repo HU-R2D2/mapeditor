@@ -9,8 +9,9 @@
 //! \file   mapEditor.hpp
 //! \author Jop van Buuren, 1658718
 //!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
 //! \date   Created: 06-04-2016
-//! \date   Last Modified: 08-05-2016
+//! \date   Last Modified: 10-06-2016
 //! \brief  Header for mapEditor
 //!
 //! This is the header file for MapEditor
@@ -50,7 +51,7 @@
 #define MAPEDITOR_HPP
 
 #include "mapView.hpp"
-#include "../../../map/source/include/MapInterface.hpp"
+#include "MapInterface.hpp"
 
 //! @brief      The mapEditor class is used to write to maps
 class mapEditor : public mapView
