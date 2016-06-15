@@ -64,6 +64,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <string>
+#include "mapeditormodule.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -243,6 +244,8 @@ private:
     std::string path;
 
     bool edited = false;
+
+    std::vector<mapeditorModule*> modules{};
 
 };
 

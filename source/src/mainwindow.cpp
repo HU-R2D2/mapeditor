@@ -14,6 +14,14 @@
 #include "mapEditor.hpp"
 #include "BoxMap.hpp"
 
+#ifdef henk
+#include "exampleModule.hpp"
+#endif
+
+#define hash #
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,6 +41,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this,
             SLOT(selectionChanged()));
+#ifdef MODULE
+    std::cout<<"Modules are being loaded" << std::endl;
+    MODULE_CONSTRUCTORS;
+#endif
 }
 
 MainWindow::~MainWindow()
