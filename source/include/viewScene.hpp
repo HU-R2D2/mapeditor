@@ -4,7 +4,8 @@
 //! this class extends QGraphicsScene (the qt Scene class).
 //! The viewScene handels all the visual objects in the QGraphicsView.
 //! It translates the the map coordinates to scene coordinated and back.
-//! This is done because the Y axis is fliped and the scene cannot draw in negative coordinates.
+//! This is done because the Y axis is fliped and
+//! the scene cannot draw in negative coordinates.
 //!
 //! \file   viewScene.hpp
 //! \author Koen de Guijter, 1671103
@@ -68,17 +69,15 @@
 #include "Length.hpp"
 #include "MapInterface.hpp"
 
-class viewScene : public QGraphicsScene
-    {
+class ViewScene : public QGraphicsScene{
     Q_OBJECT
-
 private:
     bool outlined = false;
 
     QPoint originOffset{0,0};
 
-    // can't be empty (missclick guard)
-    QGraphicsRectItem * tmpSelection = new QGraphicsRectItem(0, 0, 10, 10);
+    // can't be empty (missclick guard), default set to 0
+    QGraphicsRectItem * tmpSelection = new QGraphicsRectItem(0, 0, 0, 0);
 
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
     QGraphicsLineItem * yAxis = addLine(0,0,0,0);
@@ -89,7 +88,7 @@ public:
     //! \brief  constructor for viewScene, creates new viewScene
     //!
     //! \param parent QWidget to be passed to QGraphicsScene
-    explicit viewScene(QObject *parent = 0);
+    explicit ViewScene(QObject *parent = 0);
 
     //! \fn     void drawAxes()
     //!
@@ -223,7 +222,6 @@ public:
     //!
     //! \param outline bool, boolean value set outline on of
     void setOutline(bool state);
-
 };
 
 #endif // VIEWSCENE_HPP
