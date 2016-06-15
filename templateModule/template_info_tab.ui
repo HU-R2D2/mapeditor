@@ -5,13 +5,13 @@
  <class>template_info_tab</class>
  <widget class="QWidget" name="template_info_tab">
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>400</width>
-    <height>300</height>
-   </rect>
-  </property>
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>271</width>
+      <height>151</height>
+     </rect>
+    </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
