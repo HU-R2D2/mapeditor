@@ -1,6 +1,6 @@
 #include "exampleModule.hpp"
 
-exampleModule::exampleModule(mapEditor * sad, QObject *parent): mapeditorModule(sad,parent)
+exampleModule::exampleModule(QObject *parent): mapeditorModule(parent)
     {
 		std::cout<< "mod con test" << std::endl;
 		module_name = "example";

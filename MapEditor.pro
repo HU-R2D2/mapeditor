@@ -16,13 +16,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = MapEditor
 TEMPLATE = app
 
-#defines that an module is loaded
-#QMAKE_CXXFLAGS += -DMODULE
-
-MODULE_INCLUDES +=
-
-MODULE_PUSH_BACK +=
-
 include(source/exampleModule/exampleModule.pri)
 
 SOURCES +=    source/src/mainwindow.cpp \

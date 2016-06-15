@@ -17,9 +17,12 @@ protected:
 
     //edit tab
     QWidget * editTab = nullptr;
+    QString edit_tab_name = "edit tab";
 
     //info tab
     QWidget * infoTab = nullptr;
+    QString info_tab_name = "info tab";
+
 
     mapEditor * mapEditorPointer;
 
@@ -32,14 +35,14 @@ public:
     QWidget *getEditTab() const;
     QWidget *getInfoTab() const;
 
-    void connect_module(QMenu* menu, QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar);
+    void connect_module(mapEditor * map_editor, QMenu* menu, QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar);
 
-    explicit mapeditorModule(mapEditor * mapEditor, QObject *parent);
+    explicit mapeditorModule(QObject *parent);
 
 public slots:
     void action_toggled(bool);
 signals:
-    void set_tab_bar(QTabWidget*,QWidget*,bool);
+    void set_tab_bar(QTabWidget*,QWidget*,bool,const QString&);
 
     };
 

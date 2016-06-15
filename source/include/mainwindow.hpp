@@ -248,7 +248,7 @@ private:
     std::vector<mapeditorModule*> modules{};
     QMenu * nb;
 public slots:
-    void set_tab_bar(QTabWidget*,QWidget*,bool);
+    void set_tab_bar(QTabWidget*,QWidget*,bool,const QString&);
 };
 
 #endif // MAINWINDOW_HPP

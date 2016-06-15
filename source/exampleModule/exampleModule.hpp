@@ -8,7 +8,7 @@
 
 class exampleModule : public mapeditorModule{
 public:
-    exampleModule(mapEditor * sad,  QObject *parent);
+    exampleModule(QObject *parent);
     };
 
 #endif // EXAMPLEMODULE_HPP

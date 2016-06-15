@@ -36,16 +36,27 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this,
             SLOT(selectionChanged()));
 
+    // marco that will build all modules and put them in a vector.
+    // declared in MapEditor.pro
     MODULE_CONSTRUCTORS;
+    // if an module is loaded Modules menu will be added.
     if (modules.size()>0){
          nb =menuBar()->addMenu("Modules");
-        }
-    for(mapeditorModule * module : modules){
-            module->connect_module(nb, ui->info_tab_bar, ui->edit_tab_bar);
-            QObject::connect(
-                        module, SIGNAL(set_tab_bar(QTabWidget*,QWidget*,bool)),
-                        this, SLOT(set_tab_bar(QTabWidget*,QWidget*,bool))
-                        );
+        // connecting modules with signals to handel toggles of moduels and
+        // give the moduels some general pointers.
+        for(mapeditorModule * module : modules){
+                module->connect_module(
+                            ui->graphicsView, nb,
+                            ui->info_tab_bar,
+                            ui->edit_tab_bar
+                            );
+                QObject::connect(
+                            module,
+                            SIGNAL(set_tab_bar(QTabWidget*,QWidget*,bool,const QString&)),
+                            this,
+                            SLOT(set_tab_bar(QTabWidget*,QWidget*,bool,const QString&))
+                            );
+            }
         }
 }
 
@@ -86,10 +97,10 @@ void MainWindow::updateFileData(){
     ui->fd_name->setText(QString::fromStdString(file));
     }
 
-void MainWindow::set_tab_bar(QTabWidget *tab_bar, QWidget *tab_widget, bool show)
+void MainWindow::set_tab_bar(QTabWidget *tab_bar, QWidget *tab_widget, bool show,const QString& name)
     {
         if(show){
-        tab_bar->addTab(tab_widget,tab_widget->objectName());
+        tab_bar->addTab(tab_widget,name);
             }
         else {
               tab_bar->removeTab(tab_bar->indexOf(tab_widget));
