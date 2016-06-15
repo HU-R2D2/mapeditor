@@ -1,3 +1,53 @@
+//! \addtogroup 0008 Mapviewer/-editor
+//! \brief main gui class
+//!
+//! this class extends QMainWindow.
+//! in this class are all the buttons, labels and
+//! other gui items declared that are in the gui.
+//!
+//! \file   mainwindow.hpp
+//! \author jessy Visch,
+//!         Jop van Buuren, 1658718
+//!         Daniel Klomp, 1661521
+//!         Koen de Guijter, 1671103
+//!         Jasper Schoenmaker, 1661818
+//! \date   Created: 30-03-2016
+//! \date   Last Modified: 10-06-2016
+//! \brief  Header for mainwindow
+//!
+//! This is the header file for mainwindow
+//!
+//! \copyright Copyright © 2016, HU University of Applied Sciences Utrecht.
+//! All rights reserved.
+//!
+//! License: newBSD
+//!
+//! Redistribution and use in source and binary forms,
+//! with or without modification, are permitted provided that
+//! the following conditions are met:
+//! - Redistributions of source code must retain the above copyright notice,
+//!   this list of conditions and the following disclaimer.
+//! - Redistributions in binary form must reproduce the above copyright notice,
+//!   this list of conditions and the following disclaimer in the documentation
+//!   and/or other materials provided with the distribution.
+//! - Neither the name of the HU University of Applied Sciences Utrecht
+//!   nor the names of its contributors may be used to endorse or promote
+//!   products derived from this software without specific prior written
+//!   permission.
+//!
+//! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//! "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+//! BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+//! AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//! IN NO EVENT SHALL THE HU UNIVERSITY OF APPLIED SCIENCES UTRECHT
+//! BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+//! PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+//! OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+//! WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+//! OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//! EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// ~< HEADER_VERSION 2016 04 12 >~
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDesktopServices>
@@ -27,28 +77,39 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
 
-    ui->graphicsView->scene->addOriginOffset(ui->graphicsView->width(),
-                                             ui->graphicsView->height());
+    ui->graphicsView->scene->addOriginOffset(
+        ui->graphicsView->width(),
+        ui->graphicsView->height()
+    );
+
     ui->graphicsView->recenterMap();
 
-    connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this,
-            SLOT(selectionChanged()));
+    connect(
+        ui->graphicsView->scene,
+        SIGNAL(selectionChanged()),
+        this,
+        SLOT(selectionChanged())
+    );
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
+    delete map;
 }
 
-void MainWindow::on_actionRoboRescue_wiki_triggered()
-{
+void MainWindow::on_actionRoboRescue_wiki_triggered(){
     QString link = "https://www.roborescue.nl";
     QDesktopServices::openUrl(QUrl(link));
 }
 
-void MainWindow::on_actionSave_as_triggered()
-{
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QString() ,tr("map (*.map)"));
+void MainWindow::on_actionSave_as_triggered(){
+    QString fileName =
+        QFileDialog::getSaveFileName(
+            this,
+            tr("Save File"),
+            QString(),
+            tr("map (*.map)")
+        );
     fileName_std = fileName.toUtf8().constData();
     ui->graphicsView->saveMapFile(fileName_std);
     edited = false;
@@ -90,42 +151,38 @@ void MainWindow::on_actionLoad_triggered()
     setTitleState(true);
 }
 
-void MainWindow::on_zoomInButton_clicked()
-{
+void MainWindow::on_zoomInButton_clicked(){
     ui->graphicsView->increaseZoom();
     ui->zoomResetButton->setText(
-                QString::number(ui->graphicsView->getScale())+ " %");
+        QString::number(ui->graphicsView->getScale())+ " %");
 }
 
-void MainWindow::on_zoomOutButtom_clicked()
-{
+void MainWindow::on_zoomOutButtom_clicked(){
     ui->graphicsView->decreaseZoom();
     ui->zoomResetButton->setText(
-                QString::number(ui->graphicsView->getScale())+ " %");
+        QString::number(ui->graphicsView->getScale())+ " %"
+    );
 }
 
-void MainWindow::on_zoomResetButton_clicked()
-{
+void MainWindow::on_zoomResetButton_clicked(){
     ui->graphicsView->resetScale();
     ui->zoomResetButton->setText(
-                QString::number(ui->graphicsView->getScale())+ " %");
+        QString::number(ui->graphicsView->getScale())+ " %"
+    );
 }
 
-void MainWindow::on_actionPan_toggled(bool activatePan)
-{
+void MainWindow::on_actionPan_toggled(bool activatePan){
     if(activatePan){
-            ui->actionSelectMode->setChecked(false);
-            ui->graphicsView->setSelectable(false);
-            ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-        }
-    else{
-            ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-            ui->graphicsView->setSelectable(true);
-        }
+        ui->actionSelectMode->setChecked(false);
+        ui->graphicsView->setSelectable(false);
+        ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    }else{
+        ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+        ui->graphicsView->setSelectable(true);
+    }
 }
 
-void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
-{
+void MainWindow::on_actionSelectMode_toggled(bool activateSelect){
     if(activateSelect){
         ui->actionPan->setChecked(false);
         ui->graphicsView->setSelectable(true);
@@ -141,8 +198,7 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 
 
 
-bool MainWindow::eventFilter(QObject *, QEvent *event)
-{
+bool MainWindow::eventFilter(QObject *, QEvent *event){
     switch(event->type()){
         case QEvent::GraphicsSceneMouseMove:
             {
@@ -190,20 +246,16 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
     return false;
 }
 
-
-
-void MainWindow::on_Set_clicked()
-{
+void MainWindow::on_Set_clicked(){
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
     if(!edited){
         setTitleState(true, true);
         edited = true;
     }
-
 }
-void MainWindow::on_placeTagButton_clicked()
-{
+
+void MainWindow::on_placeTagButton_clicked(){
     int x = ui->xposTag->value();
     int y = ui->yposTag->value();
     r2d2::Coordinate pos(
@@ -214,8 +266,7 @@ void MainWindow::on_placeTagButton_clicked()
     ui->graphicsView->scene->setTag(pos, tag);
 }
 
-void MainWindow::on_clearButton_clicked()
-{
+void MainWindow::on_clearButton_clicked(){
     ui->graphicsView->scene->clear();
     ui->graphicsView->emptyMap();
     ui->fd_name->setText(QString::fromStdString("-"));
@@ -226,8 +277,7 @@ void MainWindow::on_clearButton_clicked()
     setTitleState();
 }
 
-void MainWindow::on_actionSave_triggered()
-{
+void MainWindow::on_actionSave_triggered(){
     if(fileName_std == ""){
         on_actionSave_as_triggered();
     }else {
@@ -237,9 +287,11 @@ void MainWindow::on_actionSave_triggered()
     edited = false;
 }
 
-void MainWindow::setTitleState(bool fileLoaded,
-                               bool fileEdited,
-                               bool fileSaved){
+void MainWindow::setTitleState(
+        bool fileLoaded,
+        bool fileEdited,
+        bool fileSaved
+    ){
     std::string name = "R2D2 Map Editor";
     updateFileData();
     if(fileLoaded){
@@ -253,49 +305,47 @@ void MainWindow::setTitleState(bool fileLoaded,
     setWindowTitle(QString::fromStdString(name));
 }
 
-void MainWindow::on_rotateLeftButton_clicked()
-{
+void MainWindow::on_rotateLeftButton_clicked(){
     ui->graphicsView->decreaseRotation();
     ui->resetRotationButton->setText(
-                QString::number(ui->graphicsView->getRotation()));
+        QString::number(ui->graphicsView->getRotation())
+    );
 }
 
-void MainWindow::on_rotateRightButton_clicked()
-{
+void MainWindow::on_rotateRightButton_clicked(){
     ui->graphicsView->increaseRotation();
     ui->resetRotationButton->setText(
-                QString::number(ui->graphicsView->getRotation()));
+        QString::number(ui->graphicsView->getRotation())
+    );
 }
 
-void MainWindow::on_resetRotationButton_clicked()
-{
+void MainWindow::on_resetRotationButton_clicked(){
     ui->graphicsView->resetRotation();
     ui->resetRotationButton->setText(
-                QString::number(ui->graphicsView->getRotation()));
+        QString::number(ui->graphicsView->getRotation())
+    );
 }
 
-void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
-{
+void MainWindow::on_zoomSpeedSlider_valueChanged(int value){
     ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
 }
 
-void MainWindow::on_goNavigate_clicked()
-{
+void MainWindow::on_goNavigate_clicked(){
     r2d2::Coordinate pos(
-                ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
-                ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
-                0*r2d2::Length::CENTIMETER);
+        ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
+        ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
+        0*r2d2::Length::CENTIMETER
+    );
+
     ui->graphicsView->centerOn(
                 ui->graphicsView->scene->box_coordinate_2_qpoint(pos));
     ui->graphicsView->set_z_top(ui->input_z_bot->text().toFloat());
     ui->graphicsView->set_z_bottom(ui->input_z_top->text().toFloat());
 
     ui->graphicsView->drawMap();
-
 }
 
-void MainWindow::on_actionDebug_triggered()
-{
+void MainWindow::on_actionDebug_triggered(){
    int test = ui->graphicsView->scene->items().length();
    std::cout << "items in scene items list: " << test << std::endl;
 
@@ -326,12 +376,11 @@ void MainWindow::on_actionDebug_triggered()
 
    testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
 
-      std::cout << "testbox2: " <<
-      testbox.get_bottom_left().get_x() << " " <<
-      testbox.get_top_right().get_x() << " " <<
-      testbox.get_bottom_left().get_y() << " " <<
-      testbox.get_top_right().get_y() << std::endl;
-
+   std::cout << "testbox2: " <<
+   testbox.get_bottom_left().get_x() << " " <<
+   testbox.get_top_right().get_x() << " " <<
+   testbox.get_bottom_left().get_y() << " " <<
+   testbox.get_top_right().get_y() << std::endl;
 }
 
 QString MainWindow::double_coord_2_QString(double x, double y){
@@ -343,8 +392,7 @@ QString MainWindow::double_coord_2_QString(double x, double y){
     );
 }
 
-void MainWindow::on_Delete_pressed()
-{
+void MainWindow::on_Delete_pressed(){
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
     ui->graphicsView->drawMap();
@@ -364,8 +412,7 @@ void MainWindow::selectionChanged(){
     ui->bd_zcoord->setText(double_coord_2_QString(data.ztop, data.zbottom));
 }
 
-void MainWindow::on_actionOutlinedBoxes_2_toggled(bool arg1)
-{
+void MainWindow::on_actionOutlinedBoxes_2_toggled(bool arg1){
     ui->graphicsView->scene->setOutline(arg1);
     ui->graphicsView->drawMap();
 }

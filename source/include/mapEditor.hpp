@@ -54,7 +54,7 @@
 #include "MapInterface.hpp"
 
 //! @brief      The mapEditor class is used to write to maps
-class mapEditor : public mapView
+class MapEditor : public MapView
 {
 public:
     //! \fn     explicit mapEditor::mapEditor()
@@ -62,7 +62,7 @@ public:
     //! \brief  constructor for mapEditor, creates new mapView
     //!
     //! \param parent QWidget to be passed to mapView
-    explicit mapEditor(QWidget *parent = 0);
+    explicit MapEditor(QWidget *parent = 0);
 
     //! \fn     void mapEditor::removeTile()
     //!
