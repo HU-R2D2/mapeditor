@@ -4,10 +4,11 @@
 #include <QObject>
 #include <QWidget>
 #include "mapeditormodule.hpp"
+#include "exampleEditTab.hpp"
 
 class exampleModule : public mapeditorModule{
 public:
-    exampleModule(mapEditor * sad);
+    exampleModule(mapEditor * sad,  QObject *parent);
     };
 
 #endif // EXAMPLEMODULE_HPP

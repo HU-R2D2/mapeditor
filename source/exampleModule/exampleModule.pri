@@ -3,8 +3,9 @@ QMAKE_CXXFLAGS += -DMODULE
 
 QMAKE_CXXFLAGS += -Dhenk
 
-MODULE_PUSH_BACK += "modules.push_back(new exampleModule(ui->graphicsView));"
-MODULE_PUSH_BACK += "modules.push_back(new exampleModule(ui->graphicsView));"
+QMAKE_CXXFLAGS += -includeexampleModule.hpp
+
+MODULE_PUSH_BACK += "modules.push_back(new exampleModule(ui->graphicsView,this));"
 
 
 

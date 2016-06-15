@@ -13,13 +13,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include "mapEditor.hpp"
 #include "BoxMap.hpp"
-
-#ifdef henk
-#include "exampleModule.hpp"
-#endif
-
-#define hash #
-
+#define HEADER
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -41,10 +35,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsView->scene, SIGNAL(selectionChanged()), this,
             SLOT(selectionChanged()));
-#ifdef MODULE
-    std::cout<<"Modules are being loaded" << std::endl;
+
     MODULE_CONSTRUCTORS;
-#endif
+    if (modules.size()>0){
+         nb =menuBar()->addMenu("Modules");
+        }
+    for(mapeditorModule * module : modules){
+            module->connect_module(nb, ui->info_tab_bar, ui->edit_tab_bar);
+            QObject::connect(
+                        module, SIGNAL(set_tab_bar(QTabWidget*,QWidget*,bool)),
+                        this, SLOT(set_tab_bar(QTabWidget*,QWidget*,bool))
+                        );
+        }
 }
 
 MainWindow::~MainWindow()
@@ -82,7 +84,18 @@ void MainWindow::updateFileData(){
 
     ui->fd_path->setText(QString::fromStdString(path));
     ui->fd_name->setText(QString::fromStdString(file));
-}
+    }
+
+void MainWindow::set_tab_bar(QTabWidget *tab_bar, QWidget *tab_widget, bool show)
+    {
+        if(show){
+        tab_bar->addTab(tab_widget,tab_widget->objectName());
+            }
+        else {
+              tab_bar->removeTab(tab_bar->indexOf(tab_widget));
+            }
+
+    }
 
 void MainWindow::on_actionLoad_triggered()
 {
