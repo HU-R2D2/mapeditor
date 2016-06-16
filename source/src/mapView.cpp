@@ -50,7 +50,7 @@
 // ~< HEADER_VERSION 2016 04 12 >~
 
 #include "mapView.hpp"
-#include "ArrayBoxMap.hpp"
+#include "DefaultBoxMap.hpp"
 #include <iostream>
 #include <QMouseEvent>
 #include <QScrollBar>
@@ -313,8 +313,8 @@ void MapView::checkSceneBorder(){
     }
 }
 
-void MapView::loadMapFile(std::string file){
-    map = new r2d2::ArrayBoxMap;
+void MapView::loadMapFile(string file) {
+    map = new r2d2::DefaultBoxMap;
     map->load(file);
     recenterMap();
     drawMap();
@@ -428,9 +428,8 @@ void MapView::mouseReleaseEvent(QMouseEvent* event){
     QGraphicsView::mouseReleaseEvent(event);
 }
 
-
 void MapView::emptyMap(){
-    map = new r2d2::ArrayBoxMap();
+    map = new r2d2::DefaultBoxMap();
 }
 
 

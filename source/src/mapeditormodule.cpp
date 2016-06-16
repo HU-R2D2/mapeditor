@@ -1,4 +1,4 @@
-#include "mapeditorModule.hpp"
+#include "mapeditormodule.hpp"
 
 QWidget *mapeditorModule::getInfoTab() const
 {
