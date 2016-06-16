@@ -94,7 +94,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="mapEditor" name="graphicsView">
+   <widget class="MapEditor" name="graphicsView">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -1355,9 +1355,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>mapEditor</class>
+   <class>MapEditor</class>
    <extends>QGraphicsView</extends>
-   <header location="global">../source/include/mapEditor.hpp</header>
+   <header location="global">mapEditor.hpp</header>
   </customwidget>
  </customwidgets>
  <tabstops>
