@@ -114,9 +114,15 @@ MainWindow::MainWindow(QWidget *parent) :
                 module->connect_module(nb);
                 QObject::connect(
                             module,
-                            SIGNAL(set_tab_bar(QTabWidget*,QWidget*,bool,const QString&)),
+                            SIGNAL(set_tab_bar(
+                                       QTabWidget*,QWidget*,
+                                       bool,const QString&)
+                                   ),
                             this,
-                            SLOT(set_tab_bar(QTabWidget*,QWidget*,bool,const QString&))
+                            SLOT(set_tab_bar(
+                                     QTabWidget*,QWidget*,
+                                     bool,const QString&)
+                                 )
                             );
             }
         }
@@ -163,7 +169,12 @@ void MainWindow::updateFileData(){
     ui->fd_name->setText(QString::fromStdString(file));
     }
 
-void MainWindow::set_tab_bar(QTabWidget *tab_bar, QWidget *tab_widget, bool show,const QString& name)
+void MainWindow::set_tab_bar(
+        QTabWidget *tab_bar,
+        QWidget *tab_widget,
+        bool show,
+        const QString& name
+        )
     {
         if(show){
         tab_bar->addTab(tab_widget,name);
