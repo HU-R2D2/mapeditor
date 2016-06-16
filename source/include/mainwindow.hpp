@@ -2,7 +2,8 @@
 //! \brief main gui class
 //!
 //! this class extends QMainWindow.
-//! in this class are all the buttons, labels and other gui items declared that are in the gui.
+//! in this class are all the buttons, labels and
+//! other gui items declared that are in the gui.
 //!
 //! \file   mainwindow.hpp
 //! \author jessy Visch,

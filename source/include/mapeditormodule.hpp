@@ -24,7 +24,7 @@ protected:
     QString info_tab_name = "info tab";
 
 
-    mapEditor * mapEditorPointer;
+    MapEditor * mapEditorPointer;
 
     QTabWidget * info_tab_bar_mainwindow;
     QTabWidget * edit_tab_bar_mainwindow;
@@ -35,7 +35,7 @@ public:
     QWidget *getEditTab() const;
     QWidget *getInfoTab() const;
 
-    void connect_module(mapEditor * map_editor, QMenu* menu, QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar);
+    void connect_module(MapEditor * map_editor, QMenu* menu, QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar);
 
     explicit mapeditorModule(QObject *parent);
 

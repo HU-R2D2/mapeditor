@@ -3,7 +3,7 @@
 //!
 //! this class extends Graphicsview (the qt ui viewer class).
 //! it implemts a set of functions zoom, rotate and move trough a map.
-//! it also enables the selection of boxes and forms a super class for mapeditor.
+//! it enables the selection of boxes and forms a super class for mapeditor.
 //! this class initiliazis the viewscene (the scene that is displayed).
 //!
 //! \file   mapEditor.hpp
@@ -89,23 +89,21 @@ struct selectionData{
     double zbottom;
 };
 
-
-class mapView: public QGraphicsView
-{
+class MapView: public QGraphicsView {
 public:
     //! \fn     explicit mapView::mapView(QWidget * parent)
     //!
-    //! \brief  constructor for mapView, creates new QGraphicsView and sets dimensions
+    //! \brief  constructor for mapView, creates QGraphicsView and sets size
     //!
     //! \param parent QWidget required for UI
-    explicit mapView(QWidget *parent);
+    explicit MapView(QWidget *parent);
 
     //! \fn     explicit mapEditor::mapEditor()
     //!
     //! \brief  constructor for mapEditor, creates new mapView
     //!
     //! \param parent QWidget to be passed to mapView
-    ~mapView();   
+    ~MapView();
 
     //! \fn     bool mapEditor::mouseInMapView()
     //!
@@ -129,17 +127,17 @@ public:
 
     //! \fn     void mapEditor::updateSelection()
     //!
-    //! \brief  updates the list of selected boxes with the currently selected boxes in view
+    //! \brief  updates the selectedBox with the currently selected box in view
     void updateSelection();
 
     //! \fn     void mapEditor::increaseScale()
     //!
-    //! \brief  increases the scale of the map to increase size of boxes (zooming in)
+    //! \brief  increases the scale value and update the view (zooming in)
     void increaseZoom();
 
     //! \fn     void mapEditor::decreaseScale()
     //!
-    //! \brief  decreases the scale of the map to decrease size of boxes (zooming out)
+    //! \brief  decreases the scale value and update the view (zooming out)
     void decreaseZoom();
 
     //! \fn     void mapEditor::increaseRotation()
@@ -223,7 +221,7 @@ public:
     void saveMapFile(std::string filename);
 
     //! viewscene scene on which we draw
-    viewScene * scene;
+    ViewScene * scene;
 
     //! map which combines TileTypes to QColors for drawing
     std::map<MapTypes::TileType, QColor> tileColors;
@@ -289,9 +287,10 @@ public:
 
     //! \fn     void mapEditor::drawBox()
     //!
-    //! \brief  reads from loaded map file the box types for the coordinateds in the given box
-    //!         calls the the draw function of the viewscene to actually draw the boxes on screen
-    //!         and if enabled (default) recenters the map on the origin
+    //! \brief  reads from loaded map file the box types for the coordinateds
+    //!         in the given box. calls the the draw function of the viewscene
+    //!         to actually draw the boxes on screen and if enabled (default)
+    //!         recenters the map on the origin
     //!
     //! \param  box to be edited
     //! \param  tileSize of one small box, default is 10

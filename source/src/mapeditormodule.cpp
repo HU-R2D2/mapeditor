@@ -5,7 +5,7 @@ QWidget *mapeditorModule::getInfoTab() const
         return infoTab;
     }
 
-void mapeditorModule::connect_module(mapEditor * me,QMenu *menu,QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar)
+void mapeditorModule::connect_module(MapEditor * me,QMenu *menu,QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar)
     {
         mapEditorPointer = me;
         info_tab_bar_mainwindow = info_tab_bar;
