@@ -232,7 +232,7 @@ public:
     //!         from string path
     //!
     //! \param  string of path to map for io
-    void loadMapFile(string file);
+    void loadMapFile(std::string file);
 
     //! \fn      mapView::drawMap()
     //!
