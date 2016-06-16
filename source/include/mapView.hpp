@@ -54,7 +54,7 @@
 
 #include "MapInterface.hpp"
 #include "BoxMap.hpp"
-#include "ArrayBoxMap.hpp"
+#include "DefaultBoxMap.hpp"
 #include "Box.hpp"
 #include "Coordinate.hpp"
 #include "Translation.hpp"
@@ -311,15 +311,15 @@ public:
     //! \return returns integer value of min zoom
     int getMinZoom();
 
+    //! loaded map
+    r2d2::BoxMap * map = new r2d2::DefaultBoxMap;
+
 private:
 
     //! scene dimensions
     int windowWidth;
     int windowHeight;
 protected:
-    //! loaded map
-    r2d2::BoxMap * map = new r2d2::ArrayBoxMap;
-
     //! \fn     bool mapEditor::event()
     //!
     //! \brief  receives key events and translates the arrow keys to

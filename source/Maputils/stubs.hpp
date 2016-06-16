@@ -4,11 +4,11 @@
 #include <iostream>
 #include <ctime>
 
-namespace MapTypes{
-    enum class TileType {
-        UNKNOWN, MIXED, BLOCKED, EMPTY
-    };
-}
+//namespace MapTypes{
+//    enum class TileType {
+//        UNKNOWN, MIXED, BLOCKED, EMPTY
+//    };
+//}
 
 class BoxInfo {
 public:

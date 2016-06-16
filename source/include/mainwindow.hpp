@@ -65,10 +65,12 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <string>
+#include "mapeditormodule.hpp"
 
 namespace Ui {
 class MainWindow;
 }
+
 
 class MainWindow : public QMainWindow
 {
@@ -245,6 +247,10 @@ private:
 
     bool edited = false;
 
+    std::vector<mapeditorModule*> modules{};
+    QMenu * nb;
+public slots:
+    void set_tab_bar(QTabWidget*,QWidget*,bool,const QString&);
 };
 
 #endif // MAINWINDOW_HPP

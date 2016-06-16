@@ -117,15 +117,10 @@ public:
 
     //! \fn     void viewScene::drawLine()
     //!
-    //! \brief  Draws a line from position x1,y1 to position x2,y2 on
+    //! \brief  Draws a line from point1 to point2 on
     //!         the scene.
     //!
-    //! \param x1
-    //! \param y1
-    //! \param x2
-    //! \param y2
-    //! \param color of the drawn line
-    void drawLine(int x1, int y1, int x2, int y2, QRgb color);
+    void drawLine(r2d2::Coordinate point1, r2d2::Coordinate point2, QColor color);
 
     //! \fn     void viewScene::setTag()
     //!
