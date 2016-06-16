@@ -193,6 +193,7 @@ void ViewScene::drawLine(r2d2::Coordinate point1, r2d2::Coordinate point2, QColo
 
     QLineF woop(p1,p2);//eigelijk mag dit niet omdat hier al de positie gezet word, dit moet pas worden gedaan bij setpos die er nu niet is.....
     QPen pen(color);
+    pen.setWidth(50);
     QGraphicsLineItem * line = new QGraphicsLineItem;
     line->setLine(woop);
     line->setPen(pen);
