@@ -273,7 +273,7 @@
      <string>Layers</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="edit_tab_bar">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -617,7 +617,7 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QTabWidget" name="infoTab">
+   <widget class="QTabWidget" name="info_tab_bar">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -627,7 +627,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="fileData">
      <attribute name="title">
@@ -1200,7 +1200,7 @@
    <zorder>labelY</zorder>
    <zorder>line_3</zorder>
    <zorder>tab2Title</zorder>
-   <zorder>infoTab</zorder>
+   <zorder>info_tab_bar</zorder>
    <zorder>line</zorder>
    <zorder>line_2</zorder>
    <zorder>label_9</zorder>
@@ -1223,7 +1223,7 @@
    <zorder>label_Z</zorder>
    <zorder>input_z_bot</zorder>
    <zorder>input_z_top</zorder>
-   <zorder>tabWidget</zorder>
+   <zorder>edit_tab_bar</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -1231,7 +1231,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1361,8 +1361,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>infoTab</tabstop>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>info_tab_bar</tabstop>
+  <tabstop>edit_tab_bar</tabstop>
   <tabstop>type</tabstop>
   <tabstop>Set</tabstop>
   <tabstop>xposTag</tabstop>

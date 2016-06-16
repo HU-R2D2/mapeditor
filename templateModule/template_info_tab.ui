@@ -1,0 +1,21 @@
+<ui version="4.0">
+ <author/>
+ <comment/>
+ <exportmacro/>
+ <class>template_info_tab</class>
+ <widget class="QWidget" name="template_info_tab">
+  <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>271</width>
+      <height>151</height>
+     </rect>
+    </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+ </widget>
+ <pixmapfunction/>
+ <connections/>
+</ui>
