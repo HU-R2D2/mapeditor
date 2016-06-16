@@ -384,8 +384,8 @@ void MainWindow::on_actionDebug_triggered(){
 }
 
 QString MainWindow::double_coord_2_QString(double x, double y){
-    std::string xstr(to_string(roundf(x * 100)/100));
-    std::string ystr(to_string(roundf(y * 100)/100));
+    std::string xstr(std::to_string(roundf(x * 100)/100));
+    std::string ystr(std::to_string(roundf(y * 100)/100));
     return QString::fromStdString("( "+
         xstr.substr(0, xstr.size()-4) + ", " +
         ystr.substr(0, ystr.size()-4) + " )"
