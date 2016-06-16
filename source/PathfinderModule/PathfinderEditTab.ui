@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>110</y>
+     <y>190</y>
      <width>97</width>
      <height>26</height>
     </rect>
@@ -29,7 +29,33 @@
     </size>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>calculate path</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="set_start">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>30</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set start</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="set_end">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>90</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set end</string>
    </property>
   </widget>
  </widget>
