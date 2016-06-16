@@ -1,7 +1,7 @@
 
 QMAKE_CXXFLAGS += -includeexampleModule.hpp
 
-MODULE_PUSH_BACK += "modules.push_back(new exampleModule(this));"
+MODULE_PUSH_BACK += "modules.push_back(new exampleModule(data, this));"
 
 
 SOURCES += source/exampleModule/exampleInfoTab.cpp \

@@ -5,11 +5,8 @@ QWidget *mapeditorModule::getInfoTab() const
         return infoTab;
     }
 
-void mapeditorModule::connect_module(MapEditor * me,QMenu *menu,QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar)
+void mapeditorModule::connect_module(QMenu *menu)
     {
-        mapEditorPointer = me;
-        info_tab_bar_mainwindow = info_tab_bar;
-        edit_tab_bar_mainwindow = edit_tab_bar;
         QAction * action = menu->addAction(module_name);
         action->setCheckable(true);
         QObject::connect(
@@ -18,7 +15,10 @@ void mapeditorModule::connect_module(MapEditor * me,QMenu *menu,QTabWidget * inf
                     );
     }
 
-mapeditorModule::mapeditorModule(QObject *parent): QObject(parent)
+mapeditorModule::mapeditorModule(module_data data,QObject *parent): QObject(parent),
+    mapEditorPointer{data.mapeditor},
+    info_tab_bar_mainwindow{data.info},
+    edit_tab_bar_mainwindow{data.edit}
     {
 
     }

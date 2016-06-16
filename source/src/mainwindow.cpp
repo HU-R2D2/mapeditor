@@ -93,20 +93,25 @@ MainWindow::MainWindow(QWidget *parent) :
         SLOT(selectionChanged())
     );
 
+    //fill struct
+    module_data data;
+    data.mapeditor=ui->graphicsView;
+    data.edit=ui->edit_tab_bar;
+    data.info=ui->info_tab_bar;
+
     // marco that will build all modules and put them in a vector.
     // declared in MapEditor.pro
     MODULE_CONSTRUCTORS;
+
+
+
     // if an module is loaded Modules menu will be added.
     if (modules.size()>0){
          nb =menuBar()->addMenu("Modules");
         // connecting modules with signals to handel toggles of moduels and
         // give the moduels some general pointers.
         for(mapeditorModule * module : modules){
-                module->connect_module(
-                            ui->graphicsView, nb,
-                            ui->info_tab_bar,
-                            ui->edit_tab_bar
-                            );
+                module->connect_module(nb);
                 QObject::connect(
                             module,
                             SIGNAL(set_tab_bar(QTabWidget*,QWidget*,bool,const QString&)),

@@ -6,6 +6,14 @@
 #include <QString>
 #include <QAction>
 #include <QObject>
+
+//! standart mapeditor data that is used for the module
+struct module_data {
+  MapEditor * mapeditor;
+  QTabWidget * info;
+  QTabWidget * edit;
+};
+
 class mapeditorModule: public QObject{
 
     Q_OBJECT
@@ -35,9 +43,9 @@ public:
     QWidget *getEditTab() const;
     QWidget *getInfoTab() const;
 
-    void connect_module(MapEditor * map_editor, QMenu* menu, QTabWidget * info_tab_bar, QTabWidget * edit_tab_bar);
+    void connect_module(QMenu* menu);
 
-    explicit mapeditorModule(QObject *parent);
+    explicit mapeditorModule(module_data data, QObject *parent);
 
 public slots:
     void action_toggled(bool);
