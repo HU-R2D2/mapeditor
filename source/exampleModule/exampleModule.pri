@@ -1,15 +1,8 @@
-#defines that an module is loaded
-QMAKE_CXXFLAGS += -DMODULE
-
-QMAKE_CXXFLAGS += -Dhenk
 
 QMAKE_CXXFLAGS += -includeexampleModule.hpp
 
 MODULE_PUSH_BACK += "modules.push_back(new exampleModule(this));"
 
-
-
-#MODULE_CONSTRUCTORS +=
 
 SOURCES += source/exampleModule/exampleInfoTab.cpp \
     source/exampleModule/exampleEditTab.cpp \

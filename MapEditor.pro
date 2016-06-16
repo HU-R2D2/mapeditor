@@ -16,6 +16,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = MapEditor
 TEMPLATE = app
 
+#include path for the .pri file to load the moduels
 include(source/exampleModule/exampleModule.pri)
 
 SOURCES +=    source/src/mainwindow.cpp \
