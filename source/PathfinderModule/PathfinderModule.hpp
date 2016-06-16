@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QWidget>
 #include "mapeditormodule.hpp"
-#include "../../../sharedobjects/source/include/LockingSharedObject.hpp"
-#include "../../../pathfinding/source/include/AStarPathFinder.hpp"
+#include "LockingSharedObject.hpp"
+#include "AStarPathFinder.hpp"
 
 class PathfinderModule : public mapeditorModule {
 public:

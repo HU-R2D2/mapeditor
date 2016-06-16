@@ -28,6 +28,8 @@ HEADERS  += source/PathfinderModule/PathfinderEditTab.hpp \
 
 #path of files that are included
 INCLUDEPATH += source/PathfinderModule/
+INCLUDEPATH += ../pathfinding/source/include/
+INCLUDEPATH += ../sharedobjects/source/include/
 
 FORMS    += source/PathfinderModule/PathfinderInfoTab.ui \
             source/PathfinderModule/PathfinderEditTab.ui

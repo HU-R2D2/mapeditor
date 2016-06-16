@@ -313,7 +313,7 @@ void MapView::checkSceneBorder(){
     }
 }
 
-void MapView::loadMapFile(string file) {
+void MapView::loadMapFile(std::string file) {
     map = new r2d2::DefaultBoxMap;
     map->load(file);
     recenterMap();
