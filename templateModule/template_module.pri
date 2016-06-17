@@ -12,6 +12,10 @@ MODULE_PUSH_BACK += "modules.push_back(new <template_module>(this));"
 
 
 #<file_path> is relative to .pro file of mapeditor
+#include here all files that are needed by your module
+#note: there is a bug where including the same file causes qmake to crash, 
+# so dont include files that are already included by map editor itself or other depencencies.
+
 SOURCES += <file_path>/<template_edit_tab>.cpp \
     <file_path>/<template_info_tab>.cpp \
     <file_path>/<template_module>.cpp
@@ -20,7 +24,7 @@ HEADERS  += <file_path>/<template_edit_tab>.hpp \
             <file_path>/<template_info_tab>.hpp \
             <file_path>/<template_module>.hpp
 
-#path of files that are included
+#path of all header files that are included in your module that are not included by the mapeditor itself.
 INCLUDEPATH += <file_path>/
 
 FORMS    += <file_path>/<template_info_tab>.ui \

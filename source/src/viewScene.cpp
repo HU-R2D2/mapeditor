@@ -13,7 +13,7 @@
 //!         Daniel Klomp, 1661521
 //!         Jasper Schoenmaker, 1661818
 //! \date   Created: 30-03-2016
-//! \date   Last Modified: 10-06-2016
+//! \date   Last Modified: 16-06-2016
 //! \brief  Header for viewScene
 //!
 //! This is the header file for viewScene
@@ -186,13 +186,20 @@ void ViewScene::setOutline(bool state){
     outlined = state;
 }
 
-void ViewScene::drawLine(r2d2::Coordinate point1, r2d2::Coordinate point2, QColor color){
+void ViewScene::drawLine(
+        r2d2::Coordinate point1,
+        r2d2::Coordinate point2,
+        QColor color){
 
     QPointF p1 = box_coordinate_2_qpoint(point1);
     QPointF p2 = box_coordinate_2_qpoint(point2);
 
-    QLineF woop(p1,p2);//eigelijk mag dit niet omdat hier al de positie gezet word, dit moet pas worden gedaan bij setpos die er nu niet is.....
+    QLineF woop(p1,p2); // eigelijk mag dit niet omdat
+                        // hier al de positie gezet word,
+                        // dit moet pas worden gedaan bij
+                        // setpos die er nu niet is.....
     QPen pen(color);
+    pen.setWidth(50);
     QGraphicsLineItem * line = new QGraphicsLineItem;
     line->setLine(woop);
     line->setPen(pen);
