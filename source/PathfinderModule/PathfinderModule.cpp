@@ -14,13 +14,22 @@ PathfinderModule::PathfinderModule(module_data data, QObject *parent):
                         0 * r2d2::Length::METER}}
                }} {
     //set template name
-    module_name = "template";
+    module_name = "Pathfinder_demo";
 
     //construct & name edit tab if needed
     editTab = new PathfinderEditTab(this);
-    QString edit_tab_name = "edit tab";
+    edit_tab_name = "Pathfinder";
 
     //construct & name info tab if needed
     infoTab = new PathfinderInfoTab();
-    QString info_tab_name = "info tab";
+    info_tab_name = "Pathfinder";
+
+    QObject::connect(editTab,SIGNAL(set_start_label(QString)),
+                     infoTab,SLOT(set_start(QString)));
+    QObject::connect(editTab,SIGNAL(set_end_label(QString)),
+                     infoTab,SLOT(set_end(QString)));
+    QObject::connect(editTab,SIGNAL(set_length_label(QString)),
+                     infoTab,SLOT(set_length(QString)));
+
+    mapEditorPointer->scene->installEventFilter(editTab);
 }

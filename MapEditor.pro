@@ -17,7 +17,6 @@ TARGET = MapEditor
 TEMPLATE = app
 
 #include path for the .pri file to load the moduels
-#include(source/exampleModule/exampleModule.pri)
 include(source/PathfinderModule/PathfinderModule.pri)
 
 SOURCES +=    source/src/mainwindow.cpp \

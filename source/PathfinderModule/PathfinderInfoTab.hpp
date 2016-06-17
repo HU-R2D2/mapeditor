@@ -15,6 +15,10 @@ public:
 
 private:
     Ui::PathfinderInfoTab *ui;
+public slots:
+    void set_start(QString);
+    void set_end(QString);
+    void set_length(QString);
 };
 
 #endif // PATHFINDER_INFO_TAB_HPP
