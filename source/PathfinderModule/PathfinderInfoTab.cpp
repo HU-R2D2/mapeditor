@@ -6,7 +6,6 @@ PathfinderInfoTab::PathfinderInfoTab(QWidget *parent) :
     ui(new Ui::PathfinderInfoTab)
     {
         ui->setupUi(this);
-        ui->startpos_label->setText("harry");
     }
 
 PathfinderInfoTab::~PathfinderInfoTab()
