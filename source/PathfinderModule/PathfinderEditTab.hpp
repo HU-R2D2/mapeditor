@@ -35,7 +35,7 @@ private:
 signals:
     void set_start_label(QString);
     void set_end_label(QString);
-    void set_lenght_label(QString);
+    void set_length_label(QString);
 
 };
 
